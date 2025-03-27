@@ -29,7 +29,7 @@
                 <button><img src="assets/web_img/search.png" alt="Search"></button>
             </div>
             <div class="cart-btn">
-                <button><img src="assets/web_img/shopping-cart.png" alt="Cart"> Cart</button>
+                <button><img src="assets/web_img/cart.png" alt="Cart"></button>
             </div>
 
         
