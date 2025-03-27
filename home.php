@@ -29,22 +29,22 @@
                 <button><img src="assets/web_img/search.png" alt="Search"></button>
             </div>
             <div class="cart-btn">
-                <button><img src="assets/web_img/cart.png" alt="Cart"></button>
+                <button>Cart<img src="assets/web_img/cart.png" alt="Cart"></button>
             </div>
 
         
         </div>
     </nav>
     <section class="banner-section">
-        <img src="assets/web_img/banner_bg.png" alt="Banner Image" class="banner-img">
-        <div class="banner-overlay"></div>
+        <div class="banner-bg">
+
+        </div>
         <div class="banner-content">
             <h1>SOFTLY CRAFTED</h1>
             <p>CRAFTED BY HAND, TREASURED WITH LOVE.</p>
-            <button class="banner-btn">
-                Visit our Store 
-                <!-- <img src="assets/web_img/shopping-cart.png" alt="Cart Icon"> -->
-            </button>
+        </div>
+        <div class="banner-btn"> 
+            <button>Visit our Store<img src="assets/web_img/cart.png" alt=""></button>
         </div>
     </section>
 
@@ -62,24 +62,35 @@
         </div>
     </section>
 
-    <section class="collections-section">
-    <button class="view-all-btn">View All Products</button>
-        <h3>Explore <span>Our Collections</span></h3>
-        <div class="collections-slider">
-            <button class="slider-btn left">&lt;</button>
-            <div class="collection">
-                <img src="assets/web_img/flowers.png" alt="Flowers">
-                <p>FLOWERS</p>
+    <section class="collection-section">
+        <div class="collection-header">
+            <div class="collection-header-child">
+                <h2>Explore Our Collections</h2>
+                <div class="collection-underline"></div>
             </div>
-            <div class="collection">
-                <img src="assets/web_img/accessories.png" alt="Accessories">
-                <p>ACCESSORIES</p>
+            <button>View All Products</button>
+        </div>
+        <div class="category-slider-container">
+            <div class="category-slider">
+                <button class="prev-btn">&lt;</button>
+               
+                <div class="slider">
+                    <div class="category-card">
+                        <div class="category-image"></div>
+                        <p class="category-title">FLOWERS</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image"></div>
+                        <p class="category-title">ACCESSORIES</p>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image"></div>
+                        <p class="category-title">WEARABLES</p>
+                    </div>
+                </div>
+                
+                <button class="next-btn">&gt;</button>
             </div>
-            <div class="collection">
-                <img src="assets/web_img/wearables.png" alt="Wearables">
-                <p>WEARABLES</p>
-            </div>
-            <button class="slider-btn right">&gt;</button>
         </div>
     </section>
 
