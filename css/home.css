@@ -353,7 +353,6 @@ body {
 }
 
 .category-slider-container {
-    border: 1px solid red; 
     height: 500px;
     width: 70%;
     display: flex;
@@ -361,32 +360,40 @@ body {
 }
 
 .category-slider {
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 90%;
+    width: 100%;
     margin: auto;
 }
 
-
-.slider {
-    border: 1px solid red;  
-    height: 300px;  
-    width: 90%;
+.slider-wrapper {
+    height: 100%;
+    width: 80%;
+    overflow: hidden;
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    transition: transform 0.5s ease-in-out;
+    align-items: center; /* Centers vertically */
 }
 
+.slider {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease-in-out;
+    min-width: 100%;
+    white-space: nowrap; /* Prevents wrapping */
+}
+
+
 .category-card {
+    flex: 0 0 auto; /* Prevents shrinking */
     width: 200px;
     height: 250px;
     background: white;
     border-radius: 10px;
-    box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.189); 
+    box-shadow: 0px 2px 14px 2px rgba(0, 0, 0, 0.189); 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -396,10 +403,9 @@ body {
 }
 
 .category-image {
-    width: 150px;
-    height: 150px;
-    background: lightgray;
-    border-radius: 10px;
+    width: 170px;
+    height: 170px;
+    border: 1px solid lightgray;
     margin-bottom: 10px;
 }
 
@@ -409,19 +415,35 @@ body {
     color: #2B202E;
 }
 
-.prev-btn,
-.next-btn {
+/* BUTTONS */
+.prev-btn, .next-btn {
     border: none;
+    background-color: white;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189); 
     transition: 0.3s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2; /* Ensures buttons stay above */
 }
 
-.prev-btn:hover,
-.next-btn:hover {
-    background: #bbb;
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+.prev-btn img, .next-btn img {
+    width: 25px;
+    height: 25px;
 }
+
+.prev-btn:hover, .next-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
 

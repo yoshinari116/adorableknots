@@ -72,28 +72,38 @@
         </div>
         <div class="category-slider-container">
             <div class="category-slider">
-                <button class="prev-btn">&lt;</button>
-               
-                <div class="slider">
-                    <div class="category-card">
-                        <div class="category-image"></div>
-                        <p class="category-title">FLOWERS</p>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-image"></div>
-                        <p class="category-title">ACCESSORIES</p>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-image"></div>
-                        <p class="category-title">WEARABLES</p>
+                <button class="prev-btn"><img src="assets/web_img/left-arrow.png" alt=""></button>
+
+                <div class="slider-wrapper"> <!-- New wrapper for overflow control -->
+                    <div class="slider">
+                        <div class="category-card">
+                            <div class="category-image"></div>
+                            <p class="category-title">FLOWERS</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image"></div>
+                            <p class="category-title">ACCESSORIES</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image"></div>
+                            <p class="category-title">WEARABLES</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image"></div>
+                            <p class="category-title">WEARABLES</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-image"></div>
+                            <p class="category-title">WEARABLES</p>
+                        </div>
                     </div>
                 </div>
-                
-                <button class="next-btn">&gt;</button>
+
+                <button class="next-btn"><img src="assets/web_img/right-arrow.png" alt=""></button>
             </div>
         </div>
     </section>
-
+    <script src="javascript/slider.js"></script>
 
 </body>
 </html>
