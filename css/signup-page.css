@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #FF7EBC 0%, #FFB5DA 50%, #FF7EBC 100%);
+    font-family: Arial, sans-serif;
+}
+.container {
+    width: 70%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-header {    
+    width: 45%;
+    height: 40px;
+    font-family: 'Dosis', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: white;
+    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-container {
+    display: flex;
+    padding: 30px;
+    width: 100%;
+    overflow: hidden;
+    gap: 8%;
+}
+
+.signup-form {
+    width: 50%;
+    background-color: white;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;   
+    box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189);  
+}
+
+.signup-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.signup-form button {
+    width: 105%;
+    padding: 10px;
+    background: #FF98CA;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.signup-form button:hover {
+    background: #FF7EBE;
+}
+
+.signup-form p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+a {
+    color: #FF98CA;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.info-section {
+    width: 50%;
+    background: none;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.info-section p {
+    width: 100%;
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    word-spacing: 2px;
+    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 120px;
+}

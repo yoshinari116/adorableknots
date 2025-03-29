@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-links">
-            <a href="#">SIGN UP</a>
+            <a href="signup-page.php">SIGN UP</a>
             <p>|</p>
             <a href="#">LOGIN</a>
         </div>
