@@ -18,7 +18,7 @@
         <div class="nav-links">
             <a href="signup-page.php">SIGN UP</a>
             <p>|</p>
-            <a href="#">LOGIN</a>
+            <a href="login-page.php">LOGIN</a>
         </div>
         <div class="container1">
             <div class="logo">

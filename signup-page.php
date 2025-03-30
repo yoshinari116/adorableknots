@@ -26,7 +26,12 @@ session_start();
                     <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                     <button type="submit">SUBMIT</button>
                 </form>
-                <p>Already have an account? <a href="login-page.php">Log In</a></p>
+                <div class="divider">
+                    <p>OR</p>
+                </div>
+               <div class="login-suggestion">
+                Already have an account?<a href="login-page.php">Log In</a>
+               </div>
             </div>
             <div class="info-section">
                 <div class="logo">

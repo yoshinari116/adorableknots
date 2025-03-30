@@ -10,16 +10,17 @@ body {
     font-family: Arial, sans-serif;
 }
 .container {
-    width: 60%;
-
+    height: 500px;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: -100px;
 }
 
-.signup-header {    
-    width: 45%;
+.login-header {   
+    width: 100%;
     height: 40px;
     font-family: 'Dosis', sans-serif;
     font-size: 40px;
@@ -27,21 +28,15 @@ body {
     letter-spacing: 2px;
     color: white;
     text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
-    margin-right: auto;
+    padding: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.signup-container {
-    display: flex;
-    padding: 30px;
-    width: 100%;
-    overflow: hidden;
-}
-
-.signup-form {
-    width: 40%;
+.login-form { 
+    height: 60%;
+    width: 45%;
     background-color: white;
     padding: 30px;
     display: flex;
@@ -52,7 +47,7 @@ body {
     box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189);  
 }
 
-.signup-form form {
+.login-form form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,7 +55,7 @@ body {
     width: 100%;
 }
 
-.signup-form input {
+.login-form input {
     width: 80%;
     padding: 10px;
     margin: 10px 0;
@@ -68,7 +63,7 @@ body {
     border-radius: 5px;
 }
 
-.signup-form button {
+.login-form button {
     width: 85%;
     padding: 10px;
     background: #FF98CA;
@@ -81,12 +76,22 @@ body {
     cursor: pointer;
     text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.244);
     border-radius: 5px;
-    margin-top: 10px;
+    margin-top: 25px;
 }
 
-.signup-form button:hover {
+.login-form button:hover {
     background: #FF7EBC;
 }
+
+.login-form a { 
+    width: 85%;
+    padding-top: 13px;
+    color: #FF7EBC;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
 .divider {
     display: flex;
     align-items: center;
@@ -107,18 +112,18 @@ body {
     font-weight: bold;
     font-size: 12px;
     color: #FF7EBC;
-    margin: 0;
+    margin-top: 10px;
     white-space: nowrap;
 }
 
 
-.login-suggestion {
+.signup-suggestion {
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     color: #2b202e6a;
 }
 
-.login-suggestion a{
+.signup-suggestion a{
     color: #FF7EBC;
     font-weight: 800;
     text-decoration: none;
@@ -127,34 +132,4 @@ body {
 
 a:hover {
     text-decoration: underline;
-}
-
-.info-section {
-    width: 50%;
-    background: none;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px;
-}
-
-.info-section p {
-    width: 100%;
-    font-family: 'Dosis', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    word-spacing: 2px;
-    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 120px;
 }
