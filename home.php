@@ -86,15 +86,15 @@
                         </div>
                         <div class="category-card">
                             <div class="category-image"></div>
-                            <p class="category-title">WEARABLES</p>
+                            <p class="category-title">HANDMADE TOYS & DECOR</p>
                         </div>
                         <div class="category-card">
                             <div class="category-image"></div>
-                            <p class="category-title">WEARABLES</p>
+                            <p class="category-title">CLOTHING & WEARABLES</p>
                         </div>
                         <div class="category-card">
                             <div class="category-image"></div>
-                            <p class="category-title">WEARABLES</p>
+                            <p class="category-title">OTHERS</p>
                         </div>
                     </div>
                 </div>
