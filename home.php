@@ -15,24 +15,35 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-links">
-            <a href="signup-page.php">SIGN UP</a>
-            <p>|</p>
-            <a href="login-page.php">LOGIN</a>
-        </div>
         <div class="container1">
             <div class="logo">
                 <img src="assets/web_img/ak_logo.png" alt="Adorable Knots Logo">
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="Search...">
+                <input type="text" placeholder="Search for a product">
                 <button><img src="assets/web_img/search.png" alt="Search"></button>
             </div>
-            <div class="cart-btn">
-                <button>Cart<img src="assets/web_img/cart.png" alt="Cart"></button>
+            <div class="nav-opt">
+                <div class="account">
+                    <img src="assets/web_img/user-icon.png" alt="">
+                    <a href="login-page.php">Login</a>
+                    <p>|</p>
+                    <a href="signup-page.php">Sign Up</a>
+                </div>
+                <div class="cart-btn">
+                    <img src="assets/web_img/shopping-cart.png" alt="Cart">
+                    <a href="#">Cart</a>
+                </div>
+                
             </div>
-
-        
+        </div>
+        <div class= "nav-divider"></div>
+        <div class="nav-links">
+            <a href="home.php"><p>HOME</p></a>
+            <a href="#"><p>ABOUT</p></a>
+            <a href="#"><p>PRODUCTS</p></a>
+            <a href="#"><p>CONTACT</p></a>
+            <a href="#"><p>FOLLOW US</p></a>
         </div>
     </nav>
     <section class="banner-section">
