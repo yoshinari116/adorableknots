@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +14,21 @@ session_start();
     <div class="container">
         <div class="login-header">WELCOME BACK!</div>
         <div class="login-form">
-            <form action="register.php" method="POST">
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
+
+                <?php
+            if (isset($_GET['error'])) {
+                echo "<p style='color:red; text-align:center;'>" . $_GET['error'] . "</p>";
+            
+            }
+
+            if (isset($_GET['success'])) {
+                echo "<p style='color:green; text-align:center;'>" . $_GET['success'] . "</p>";
+            }
+            ?>
+
+            <form action="login/login_auth.php" method="POST">
+                <input type="username" name="username" placeholder="Username" required autocomplete="off">
+                <input type="password" name="password" placeholder="Password" required autocomplete="off">
                 <button type="LOGIN">LOGIN</button>
             </form>
             <a href="#  ">Forgot Password?</a>

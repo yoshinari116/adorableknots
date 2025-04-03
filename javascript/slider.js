@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.querySelector(".next-btn");
 
     let translateX = 0; // Track current position
-    const cardWidth = 220; // Adjust based on your `.category-card` size + gap
+    const cardWidth = 300; // Adjust based on your `.category-card` size + gap
     const maxTranslateX = -(slider.scrollWidth - slider.clientWidth);
 
     nextBtn.addEventListener("click", () => {
