@@ -274,6 +274,13 @@ body {
     transition: transform 0.2s ease;
 }
 
+.banner-btn button:hover {
+    border: 3px solid #FF98CA;
+    color: #FF98CA;
+    background: rgba(0, 0, 0, 0.356);
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089);
+}
+
 .banner-btn img {
     width: 16px;
     height: 16px;
@@ -323,7 +330,6 @@ body {
 }
 
 .collection-section {
-    border: 1px solid red; 
     height: 800px;
     font-family: 'Inter', sans-serif;
     color: #2B202E;
@@ -335,8 +341,9 @@ body {
 }
 
 .collection-header {
+    border: 1px solid red;   
     height: 100px;
-    width: 70%;
+    width: 60%;
     border-bottom: 1px solid #D6D6D6; 
     display: flex;
     align-items: center;
@@ -347,42 +354,44 @@ body {
     height: 100%; 
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
-.collection-header-child h2 {
-    width: 300px;
-    font-size: 30px;
+.collection-title {
+    padding-bottom: 5px;
+    font-size: 25px;
     font-weight: 800;
-    font-family: 'Dosis', sans-serif;
     word-spacing: 3px;
 }
 
-.collection-underline {
+.collection-underline { 
     height: 4px;
     width: 100px;
     background-color: #FF7EBC;
     border-radius: 5px;
-    margin-top: -25px;
 }
 
 .collection-header button {
-    height: 35px;
-    width: 150px;
-    border: none; 
-    background: #FF98CA;
+    border: none;
+    height: 50%;
+    width: 250px;
     color: white;
-    font-size: 12px;
+    font-size: 20px;
     font-weight: 600;
     text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.244);
+    background: #FF98CA;
     border-radius: 30px;
-    margin-top: 20px;
     cursor: pointer;
-    /* box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189);  */
     transition: transform 0.2s ease;
 }
 
 .collection-header button:hover {
+    border: 3px solid #FF98CA;
+    color: #FF98CA;
+    background: white;
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089);
     transform: scale(1.1);
+    
 }
 
 .category-slider-container {

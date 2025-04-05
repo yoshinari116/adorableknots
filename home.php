@@ -76,7 +76,7 @@
     <section class="collection-section">
         <div class="collection-header">
             <div class="collection-header-child">
-                <h2>Explore Our Collections</h2>
+                <div class="collection-title">Explore Our Collections</div>
                 <div class="collection-underline"></div>
             </div>
             <button>View All Products</button>
