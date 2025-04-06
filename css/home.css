@@ -10,7 +10,7 @@ body {
     left: 0;
     height: 100px;
     width: 100%;
-    background:#2c2530;
+    background: linear-gradient(to bottom, #FF7EBC, #FFB5DA);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -139,7 +139,7 @@ body {
     position: relative;
     font-family: 'Dosis', sans-serif;
     width: 100%;
-    height: 600px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,11 +176,11 @@ body {
     justify-content: center;
     flex-direction: column;
     z-index: 10;
-    margin-bottom: 100px;
+    margin-bottom: 10px;
 }
 
 .banner-content {
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 800;
     letter-spacing: 1px;
     word-spacing: 5px;
@@ -188,8 +188,8 @@ body {
 }
 
 .banner-sub-text  {
-    height: 80px;
-    font-size: 30px;
+    height: 70px;
+    font-size: 25px;
     font-weight: 800;
     letter-spacing: 2px;
     word-spacing: 5px;
@@ -257,7 +257,7 @@ body {
 }
 
 .intro-desc {   
-    font-size: 25px;
+    font-size: 30px;
     font-weight: 500;
     line-height: 40px;
     word-spacing: 5px;
@@ -278,7 +278,6 @@ body {
 }
 
 .collection-section {
-    border: 1px solid red;
     height: 1200px;
     display: flex;
     flex-direction: column;
