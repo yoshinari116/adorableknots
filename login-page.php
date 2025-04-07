@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
+<div class="Back">
+    <a href="home.php">BACK TO HOME</a>
+    <img src="assets/web_img/back-white.png" alt="">
+</div>
+
 <div id="errorPopup" class="popup">
     <div class="popup-content">
         <p id="popupMessage"></p>

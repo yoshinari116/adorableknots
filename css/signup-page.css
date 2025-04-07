@@ -10,7 +10,42 @@ body {
     background: linear-gradient(to bottom, #FF7EBC 0%, #FFB5DA 50%, #FF7EBC 100%);
     font-family: Arial, sans-serif;
 }
+.Back {
+    padding: 30px;
+    background: none;
+    border: 1px;
+    display: flex;
+    align-items: center;
+    margin-bottom: auto;
+    margin-right: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;;
+}
+
+.Back:hover {
+    transform: scale(1.1);
+}
+
+.Back a {
+    padding: 10px;
+    text-decoration: none;
+    font-family: 'Dosis', sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
+}
+
+.Back a:hover {
+    text-decoration: none;
+}
+
+.Back img{
+    height: 25px;
+}
+
 .container {
+    position: absolute;
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -34,7 +69,6 @@ body {
 }
 
 .signup-container {
-    border: 1px solid red;
     display: flex;
     padding: 30px;
     width: 100%;
@@ -42,7 +76,7 @@ body {
 }
 
 .signup-form {
-    width: 40%;
+    width: 400px;
     background-color: white;
     padding: 30px;
     display: flex;
@@ -71,22 +105,26 @@ body {
 
 .signup-form button {
     width: 85%;
-    padding: 10px;
+    padding: 1px;
     background: #FF98CA;
-    border: none;
+    border: 3px solid #FF98CA;
     color: #fff;
-    font-family: 'Dosis', sans-serif;
-    font-size: 14px;
+    font-family: 'Afacad', sans-serif;
+    font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px ;
     cursor: pointer;
     text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.244);
     border-radius: 5px;
     margin-top: 10px;
+    transition: transform 0.2s ease;
 }
 
 .signup-form button:hover {
-    background: #FF7EBC;
+    border: 3px solid #FF98CA;
+    color: #FF98CA;
+    background: white;
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089);
 }
 .divider {
     display: flex;
@@ -145,7 +183,7 @@ a:hover {
 .info-section p {
     width: 100%;
     font-family: 'Dosis', sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     word-spacing: 2px;
     text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
