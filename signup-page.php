@@ -14,6 +14,7 @@ session_start();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <button class="Back"><a href="home.php">BACK</a></button>
     <div class="container">
         <div class="signup-header">SIGN UP</div>
         <div class="signup-container">

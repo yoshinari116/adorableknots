@@ -32,14 +32,14 @@
         </div>
 
         <div class="nav-container">
-            <div class="account"> 
+            <button class="account">
                 <a href="signup-page.php">ACCOUNT</a>
                 <img src="assets/web_img/user.png" alt="">
-            </div>
-            <div class="cart">
+            </button>
+            <button class="cart">
                 <a href="#">CART (0) </a>
                 <img src="assets/web_img/shopping-cart.png" alt="Cart">
-            </div>
+            </button>
         </div>
         
       
