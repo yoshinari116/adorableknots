@@ -322,8 +322,8 @@ body {
     height: 300px;
 }
 
-.collection-section {
-    height: 1200px;
+.collection-section-top {
+    height: 1500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -388,7 +388,7 @@ body {
     
 }
 
-.collection-top {
+.collection-images-container {
     height: 1000px;
     width: 1200px;
     display: flex;
@@ -452,7 +452,7 @@ body {
 }
 
 .collection-card img {
-    height: 380px;
+    height: 390px;
     width: 100%;
 }
 
@@ -486,4 +486,10 @@ body {
     border: 3px solid #FF98CA;
     color: #FF98CA;
     background: white;
+}
+
+.overview{
+    border: 1px solid red;
+    height: 500px;
+
 }

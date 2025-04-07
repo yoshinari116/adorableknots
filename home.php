@@ -78,7 +78,7 @@
         </div>
     </section>
 
-    <section class="collection-section">
+    <section class="collection-section-top">
         <div class="collection-header">
             <div class="collection-header-child">
                 <div class="collection-title">Crochet Creations</div>
@@ -86,7 +86,7 @@
             </div>
             <button>Show All Products</button>
         </div>
-        <div class="collection-top">
+        <div class="collection-images-container">
             <div class="big-img">
                 <!-- <img src="../assets/web_img/set-A-overlay.png" alt=""> -->
                 <div class="big-img-bg"></div>
@@ -120,6 +120,11 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="overview">
+
+
     </section>
     
     <script src="javascript/burger-bar.js"></script>
