@@ -17,32 +17,42 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">
-            <img src="assets/web_img/ak_logo.png" alt="Adorable Knots Logo">
-        </div>
-
-        <div class="nav-links">
-            <a href="home.php">HOME</a>
-            <a href="#">PRODUCTS</a>
-            <a href="#">CONTACT</a>
-            <div class="nav-divider"></div>
-            <a href="#">FOLLOW US</a>
-        </div>
-
-        <div class="nav-opt">
-            <div class="account">
-                <img src="assets/web_img/user-icon.png" alt="">
-                <a href="login-page.php">Login</a>
-                <p>|</p>
-                <a href="signup-page.php">Sign Up</a>
+        <div class="nav-container">
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <div class="cart-btn">
+        </div>
+
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/web_img/ak_logo.png" alt="Adorable Knots Logo">
+            </div>
+        </div>
+
+        <div class="nav-container">
+            <div class="account"> 
+                <a href="signup-page.php">ACCOUNT</a>
+                <img src="assets/web_img/user.png" alt="">
+            </div>
+            <div class="cart">
+                <a href="#">CART (0) </a>
                 <img src="assets/web_img/shopping-cart.png" alt="Cart">
-                <a href="#">Cart</a>
             </div>
-            
-            </div>
+        </div>
+        
+      
+
     </nav>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <a href="home.php">HOME</a>
+        <a href="#">SHOP</a>
+        <a href="#">CONTACT</a>
+        <a href="#">FOLLOW US</a>
+    </div>
+
     <section class="banner-section">
         <div class="banner-bg"></div>
         <div class="banner-content">SOFTLY CRAFTED
@@ -111,6 +121,8 @@
             </div>
         </div>
     </section>
+    
+    <script src="javascript/burger-bar.js"></script>
 
 </body>
 </html>
