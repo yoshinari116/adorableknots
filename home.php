@@ -123,7 +123,37 @@
     </section>
 
     <section class="overview">
+        <div class="overview-bg"></div>
+        <div class="overview-content">
+            <img src="assets/web_img/flower-icon.png" alt="">
+            <div class="overview-card">
+                <div class="overview-card-title">Everlasting Blooms</div>
+                <div class="overview-card-line"></div>
+                <div class="overview-card-desc">Our crochet flowers are made to stay vibrant for years to come</div>
+            </div>
+        </div>
 
+        <div class="overview-content">
+            <img src="assets/web_img/recycle-icon.png" alt="">
+            <div class="overview-card">
+                <div class="overview-card-title">Sustainable Crafting</div>
+                <div class="overview-card-line"></div>
+                <div class="overview-card-desc">We use Eco-friendly materials for a greener future</div>
+            </div>
+        </div>
+
+        <div class="overview-content">
+            <img src="assets/web_img/yarn-ball-icon.png" alt="">
+            <div class="overview-card">
+                <div class="overview-card-title">Handmade Just for You</div>
+                <div class="overview-card-line"></div>
+                <div class="overview-card-desc">Each piece is carefully handmade after every order is placed</div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="collection-section-bottom">
 
     </section>
     

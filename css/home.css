@@ -212,24 +212,22 @@ body {
     /* box-shadow: inset 0px 0px 100px 30px rgb(0, 0, 0); */
     pointer-events: none;
 }
+
 .banner-content {
     position: relative;
     text-align: center;
-    color: white;
+    color: white; 
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    word-spacing: 5px;
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.705);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     z-index: 10;
     margin-bottom: 10px;
-}
-
-.banner-content {
-    font-size: 40px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    word-spacing: 5px;
-    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.705);
 }
 
 .banner-sub-text  {
@@ -489,7 +487,84 @@ body {
 }
 
 .overview{
-    border: 1px solid red;
-    height: 500px;
+    position: relative;
+    font-family: 'Dosis', sans-serif;
+    width: 100%;
+    height: 400px;
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
 
+.overview-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/web_img/overview-bg.png') no-repeat center center/cover;
+}
+
+.overview-bg::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 0px 35px 20px rgba(0, 0, 0, 0.212);
+    pointer-events: none;
+}
+
+.overview-content {
+    height: 350px;
+    width: 380px;
+    position: relative;
+    color: #5E5166; 
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    word-spacing: 5px;
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    z-index: 10;
+}
+
+.overview-content img {
+    height: 50px;
+}
+
+.overview-card {    
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.overview-card-title {
+    padding-bottom: 5px;
+}
+
+.overview-card-line {
+    height: 4px;
+    width: 100px;
+    background-color: #FF7EBC;
+    border-radius: 5px;
+}
+
+.overview-card-desc {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding-top: 10px;
+}
+
+
+.collection-section-bottom {
+    height: 1500px;
 }
