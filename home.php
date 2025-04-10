@@ -78,42 +78,42 @@
         </div>
     </section>
 
-    <section class="collection-section-top">
+    <section class="collection-section">
         <div class="collection-header">
             <div class="collection-header-child">
                 <div class="collection-title">Crochet Creations</div>
-                <div class="collection-underline"></div>
+                <div class="collection-line"></div>
             </div>
             <button>Show All Products</button>
         </div>
         <div class="collection-images-container">
             <div class="big-img">
                 <!-- <img src="../assets/web_img/set-A-overlay.png" alt=""> -->
-                <div class="big-img-bg"></div>
-                <div class="big-img-content">Soft Yarn, Warm Hugs, Love in Loops</div>
+                <div class="big-img-bg-top"></div>
+                <div class="big-img-content">Bloom Threads, <br>Soft Touch, <br>Pure Joy</div>
             </div>
 
             <div class="collection-group-container">
                 <div class="collection-group">
                     <div class="collection-card">
-                        <img src="assets/web_img/solo-flower.png" alt="">
+                        <img src="assets/web_img/flower.png" alt="">
                         <div class="collection-card-name">Flowers</div>
                         <a href="#">View</a>
                     </div>
                     <div class="collection-card">
-                    <img src="assets/web_img/flower-bouquet.png" alt="">
+                    <img src="assets/web_img/bouquet.png" alt="">
                         <div class="collection-card-name">Flower Bouquets</div>
                         <a href="#">View</a>
                     </div>
                 </div>
                 <div class="collection-group">
                     <div class="collection-card">
-                        <img src="assets/web_img/money-bouquet.png" alt="">
+                        <img src="assets/web_img/bouquet-money.png" alt="">
                         <div class="collection-card-name">Money Bouquets</div>
                         <a href="#">View</a>
                     </div>
                     <div class="collection-card">
-                        <img src="assets/web_img/amigurumi.png" alt="">
+                        <img src="assets/web_img/amigurumis.png" alt="">
                         <div class="collection-card-name">Amigurumi</div>
                         <a href="#">View</a>
                     </div>
@@ -153,8 +153,48 @@
 
     </section>
 
-    <section class="collection-section-bottom">
+    <section class="collection-section">
+        <div class="collection-header">
+            <div class="collection-header-child">
+                <div class="collection-title">Stitched Styles</div>
+                <div class="collection-line"></div>
+            </div>
+            <button>Show All Products</button>
+        </div>
+        <div class="collection-images-container">
+            <div class="big-img">
+                <!-- <img src="../assets/web_img/set-A-overlay.png" alt=""> -->
+                <div class="big-img-bg-bot"></div>
+                <div class="big-img-content">Cozy Threads, <br>Soft Weave, <br>Pure Awe</div>
+            </div>
 
+            <div class="collection-group-container">
+                <div class="collection-group">
+                    <div class="collection-card">
+                        <img src="assets/web_img/bags.png" alt="">
+                        <div class="collection-card-name">Bags</div>
+                        <a href="#">View</a>
+                    </div>
+                    <div class="collection-card">
+                    <img src="assets/web_img/flower-bouquet.png" alt="">
+                        <div class="collection-card-name">Wallets</div>
+                        <a href="#">View</a>
+                    </div>
+                </div>
+                <div class="collection-group">
+                    <div class="collection-card">
+                        <img src="assets/web_img/money-bouquet.png" alt="">
+                        <div class="collection-card-name">Money Bouquets</div>
+                        <a href="#">View</a>
+                    </div>
+                    <div class="collection-card">
+                        <img src="assets/web_img/amigurumi.png" alt="">
+                        <div class="collection-card-name">Amigurumi</div>
+                        <a href="#">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     
     <script src="javascript/burger-bar.js"></script>
