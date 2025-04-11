@@ -171,25 +171,25 @@
             <div class="collection-group-container">
                 <div class="collection-group">
                     <div class="collection-card">
-                        <img src="assets/web_img/bags.png" alt="">
+                        <img src="assets/web_img/bags2.png" alt="">
                         <div class="collection-card-name">Bags</div>
                         <a href="#">View</a>
                     </div>
                     <div class="collection-card">
-                    <img src="assets/web_img/flower-bouquet.png" alt="">
+                    <img src="assets/web_img/wallet.png" alt="">
                         <div class="collection-card-name">Wallets</div>
                         <a href="#">View</a>
                     </div>
                 </div>
                 <div class="collection-group">
                     <div class="collection-card">
-                        <img src="assets/web_img/money-bouquet.png" alt="">
-                        <div class="collection-card-name">Money Bouquets</div>
+                        <img src="assets/web_img/Keychain.png" alt="">
+                        <div class="collection-card-name">Keychains</div>
                         <a href="#">View</a>
                     </div>
                     <div class="collection-card">
-                        <img src="assets/web_img/amigurumi.png" alt="">
-                        <div class="collection-card-name">Amigurumi</div>
+                        <img src="assets/web_img/wearables.png" alt="">
+                        <div class="collection-card-name">Wearables</div>
                         <a href="#">View</a>
                     </div>
                 </div>
