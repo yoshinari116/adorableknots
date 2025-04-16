@@ -7,7 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #FF7EBC 0%, #FFB5DA 50%, #FF7EBC 100%);
+    /*   */
     font-family: Arial, sans-serif;
 }
 .Back {
@@ -106,10 +106,10 @@ body {
 .signup-form button {
     width: 85%;
     padding: 1px;
-    background: #FF98CA;
-    border: 3px solid #FF98CA;
+    background: #FF7EBC;
+    border: 3px solid #FF7EBC;
     color: #fff;
-    font-family: 'Afacad', sans-serif;
+    font-family: 'Dosis', sans-serif;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px ;
@@ -121,8 +121,8 @@ body {
 }
 
 .signup-form button:hover {
-    border: 3px solid #FF98CA;
-    color: #FF98CA;
+    border: 3px solid #FF7EBC;
+    color: #FF7EBC;
     background: white;
     text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089);
 }

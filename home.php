@@ -17,28 +17,38 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-container">
+        <!-- <div class="nav-container">
             <div class="burger" id="burger">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
+        </div> -->
+        <div class="logo">
+            <img src="assets/web_img/ak-logo.png" alt="Adorable Knots Logo">
         </div>
 
-        <div class="nav-container">
-            <div class="logo">
-                <img src="assets/web_img/ak_logo.png" alt="Adorable Knots Logo">
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <button class="account">
-                <a href="signup-page.php">ACCOUNT</a>
-                <img src="assets/web_img/user.png" alt="">
+        <div class="nav-links">
+            <button class="active"> 
+                <img src="assets/icons/home.png" alt="">
+                <a href="home.php">Home</a>
             </button>
-            <button class="cart">
-                <a href="#">CART (0) </a>
-                <img src="assets/web_img/shopping-cart.png" alt="Cart">
+            <button> 
+                <img src="assets/icons/bag.png" alt="">
+                <a href="store-page.php">Shop Now</a>
+            </button>
+            <button> 
+                <img src="assets/icons/Chat.png" alt="">
+                <a href="#">Contact Us</a>
+            </button>
+            <button> 
+                <img src="assets/icons/user.png" alt="">
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'account-page.php' : 'signup-page.php'; ?>">Account</a>         
+            </button>
+            <button>
+                <img src="assets/icons/cart.png" alt="Cart">
+                <a href="#">Cart ( 0 ) </a>
+                
             </button>
         </div>
         
@@ -46,20 +56,20 @@
 
     </nav>
 
-    <div class="dropdown-menu" id="dropdownMenu">
+    <!-- <div class="dropdown-menu" id="dropdownMenu">
         <a href="home.php">HOME</a>
         <a href="#">SHOP</a>
         <a href="#">CONTACT</a>
         <a href="#">FOLLOW US</a>
-    </div>
+    </div> -->
 
     <section class="banner-section">
         <div class="banner-bg"></div>
         <div class="banner-content">SOFTLY CRAFTED
             <div class="banner-sub-text">CRAFTED BY HAND, TREASURED WITH LOVE.</div>
             <button>
-                <p>View Our Store</p>
-                <img src="assets/web_img/next-circle.png" alt="">
+                View Our Store
+                <!-- <img src="assets/web_img/next-circle.png" alt=""> -->
             </button>
         </div>
     </section>
@@ -86,37 +96,26 @@
             </div>
             <button>Show All Products</button>
         </div>
-        <div class="collection-images-container">
-            <div class="big-img">
-                <!-- <img src="../assets/web_img/set-A-overlay.png" alt=""> -->
-                <div class="big-img-bg-top"></div>
-                <div class="big-img-content">Bloom Threads, <br>Soft Touch, <br>Pure Joy</div>
+        <div class="collection-container">
+            <div class="collection-highlight-container">
+                <div class="collection-highlight-img-A"></div>
+                <div class="collection-highlight-content">Crafted with Care from Petals to Plush, <br>Made to Warm Your Heart</div>
             </div>
-
-            <div class="collection-group-container">
-                <div class="collection-group">
-                    <div class="collection-card">
-                        <img src="assets/web_img/flower.png" alt="">
-                        <div class="collection-card-name">Flowers</div>
-                        <a href="#">View</a>
-                    </div>
-                    <div class="collection-card">
-                    <img src="assets/web_img/bouquet.png" alt="">
-                        <div class="collection-card-name">Flower Bouquets</div>
-                        <a href="#">View</a>
-                    </div>
+            <div class="collection-cards-container">
+                <div class="collection-card">
+                    <img src="assets/web_img/solo-flower.png" alt="">
+                    <div class="collection-card-name">Individual Flowers</div>
+                    <div class="collection-card-line"></div>
                 </div>
-                <div class="collection-group">
-                    <div class="collection-card">
-                        <img src="assets/web_img/bouquet-money.png" alt="">
-                        <div class="collection-card-name">Money Bouquets</div>
-                        <a href="#">View</a>
-                    </div>
-                    <div class="collection-card">
-                        <img src="assets/web_img/amigurumis.png" alt="">
-                        <div class="collection-card-name">Amigurumi</div>
-                        <a href="#">View</a>
-                    </div>
+                <div class="collection-card">
+                <img src="assets/web_img/flower-bouquet.png" alt="">
+                    <div class="collection-card-name">Whimsy Bouquets</div>
+                    <div class="collection-card-line"></div>
+                </div>
+                <div class="collection-card">
+                    <img src="assets/web_img/amigurumi.png" alt="">
+                    <div class="collection-card-name">Amigurumis</div>
+                    <div class="collection-card-line"></div>
                 </div>
             </div>
         </div>
@@ -156,48 +155,76 @@
     <section class="collection-section">
         <div class="collection-header">
             <div class="collection-header-child">
-                <div class="collection-title">Stitched Styles</div>
+                <div class="collection-title">Stiched Styles</div>
                 <div class="collection-line"></div>
             </div>
             <button>Show All Products</button>
         </div>
-        <div class="collection-images-container">
-            <div class="big-img">
-                <!-- <img src="../assets/web_img/set-A-overlay.png" alt=""> -->
-                <div class="big-img-bg-bot"></div>
-                <div class="big-img-content">Cozy Threads, <br>Soft Weave, <br>Pure Awe</div>
+        <div class="collection-container">
+             <div class="collection-highlight-container">
+                <div class="collection-highlight-img-B"></div>
+                <div class="collection-highlight-content-B">Woven with Purpose from Loops to Looks, <br>Crafted to Complete Your Style</div>
             </div>
+            <div class="collection-cards-container">
 
-            <div class="collection-group-container">
-                <div class="collection-group">
-                    <div class="collection-card">
-                        <img src="assets/web_img/bags2.png" alt="">
-                        <div class="collection-card-name">Bags</div>
-                        <a href="#">View</a>
-                    </div>
-                    <div class="collection-card">
-                    <img src="assets/web_img/wallet.png" alt="">
-                        <div class="collection-card-name">Wallets</div>
-                        <a href="#">View</a>
-                    </div>
+                <div class="collection-card">
+                    <img src="assets/web_img/bag-wallet.png" alt="">
+                    <div class="collection-card-name">Bags & Wallet</div>
+                    <div class="collection-card-line"></div>
                 </div>
-                <div class="collection-group">
-                    <div class="collection-card">
-                        <img src="assets/web_img/Keychain.png" alt="">
-                        <div class="collection-card-name">Keychains</div>
-                        <a href="#">View</a>
-                    </div>
-                    <div class="collection-card">
-                        <img src="assets/web_img/wearables.png" alt="">
-                        <div class="collection-card-name">Wearables</div>
-                        <a href="#">View</a>
-                    </div>
+
+                <div class="collection-card">
+                    <img src="assets/web_img/wearables.png?v1" alt="">
+                    <div class="collection-card-name">Accessories & Wearables</div>
+                    <div class="collection-card-line"></div>
                 </div>
+
+                <div class="collection-card">
+                    <img src="assets/web_img/keychains.png" alt="">
+                    <div class="collection-card-name">Knitted Keychains</div>
+                    <div class="collection-card-line"></div>
+                </div>
+
+                
             </div>
         </div>
     </section>
+
+    <div class="quote"><p>"Every stitch is made with love, every knot weaves a story, and every creation is a timeless piece crafted just for you."</p></div>
+        
+    <section class="footer">
+        <div class="footer-info">
+            <div class="footer-logo">
+            <img src="assets/web_img/ak-logo.png" alt="Adorable Knots Logo">
+            </div>
+            <div class="footer-content">
+                <div class="footer-content-header">Contact</div>
+                <p>alexandrajingco352@gmail.com<br>63 0919 123 4567</p>
+            </div>
+            <div class="footer-content">
+                <div class="footer-content-header">Address</div>
+                <p>Phase 2 Block 5 Lot 1 <br> Magdalena Homes <br>
+                Sto. Tomas, Subic, Zambales</p>
+            </div>
+            <div class="footer-content">
+                <div class="footer-content-header">Follow Us</div>
+                <p>
+                    <a href="#"><img src="assets/icons/facebook.png" alt="">Facebook</a>
+                    <a href="#"><img src="assets/icons/instagram.png" alt="">Instagram</a>
+                </p>  
+            </div>
+        </div>
+        <div class="footer-line"></div>
+        <div class="footer-others">
+            <p> Shipping: Nationwide via J&T / LBC</p>
+            <p> Made to order: Crafting starts after you place an order </p>
+            <p> Support: DM us anytime on FB or IG</p>
+        </div>
+        
+    </section>
     
     <script src="javascript/burger-bar.js"></script>
+    <script src="javascript/navbar-icons.js"></script>
 
 </body>
 </html>

@@ -49,7 +49,6 @@
         popupMessage.innerText = message;
         popup.style.display = "block";
 
-        // Hide popup after 3 seconds
         setTimeout(function () {
             popup.style.display = "none";
         }, 3000);

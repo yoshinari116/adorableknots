@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if($role == 'admin'){
             header(header: 'Location: ../admin/admin-page.php');
         }else{
-            header(header: 'Location: ../store-page.php');
+            header(header: 'Location: ../home-page.php');
         }exit;
 
 

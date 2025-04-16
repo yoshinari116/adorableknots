@@ -14,7 +14,6 @@ if (isset($_SESSION['user'])) {
     exit;
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +42,7 @@ if (isset($_SESSION['user'])) {
                 <img src="assets/icons/home.png" alt="">
                 <a href="home.php">Home</a>
             </button>
-            <button class="active"> 
+            <button> 
                 <img src="assets/icons/bag.png" alt="">
                 <a href="store-page.php">Shop Now</a>
             </button>
@@ -51,7 +50,7 @@ if (isset($_SESSION['user'])) {
                 <img src="assets/icons/Chat.png" alt="">
                 <a href="#">Contact Us</a>
             </button>
-            <button> 
+            <button class="active"> 
                 <img src="assets/icons/user.png" alt="">
                 <a href="account-page.php">Account</a>          
             </button>
