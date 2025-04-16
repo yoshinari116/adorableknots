@@ -39,7 +39,7 @@ session_start();
             </div>
             <div class="info-section">
                 <div class="logo">
-                    <img src="assets/web_img/ak_logo.png" alt="Adorable Knots Logo">
+                    <img src="assets/web_img/ak-logo.png?v3" alt="Adorable Knots Logo">
                 </div>
                 <p>Sign up now to explore our beautiful handmade collections and create something special just for you.</p>
             </div>

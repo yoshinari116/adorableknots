@@ -25,7 +25,7 @@
             </div>
         </div> -->
         <div class="logo">
-            <img src="assets/web_img/ak-logo.png" alt="Adorable Knots Logo">
+            <img src="assets/web_img/ak-logo.png?v2" alt="Adorable Knots Logo">
         </div>
 
         <div class="nav-links">
