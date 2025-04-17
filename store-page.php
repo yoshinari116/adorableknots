@@ -23,19 +23,22 @@ if (isset($_SESSION['user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adorable Knots</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/navbar.css">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Dosis:wght@200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <nav class="navbar">
+    <nav class="custom-navbar">
         <div class="logo">
-            <img src="assets/web_img/ak-logo.png" alt="Adorable Knots Logo">
+            <img src="assets/web_img/ak-logo.png?v2" alt="Adorable Knots Logo">
         </div>
 
         <div class="nav-links">
@@ -53,7 +56,7 @@ if (isset($_SESSION['user'])) {
             </button>
             <button> 
                 <img src="assets/icons/user.png" alt="">
-                <a href="account-page.php">Account</a>          
+                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php'; ?>">Account</a>  
             </button>
             <button>
                 <img src="assets/icons/cart.png" alt="Cart">

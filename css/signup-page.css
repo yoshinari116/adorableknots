@@ -41,7 +41,7 @@ body {
 }
 
 .Back img{
-    height: 25px;
+    height: 20px;
 }
 
 .container {
@@ -107,7 +107,7 @@ body {
     height: 40px;
     width: 85%;
     padding: 1px;
-    background: linear-gradient(to bottom, #FF7EBC, #FF98CA, #FF7EBC);
+    background: #FF98CA;
     border: none;
     color: #fff;
     font-family: 'Dosis', sans-serif;

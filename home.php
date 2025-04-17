@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="custom-navbar">
         <!-- <div class="nav-container">
             <div class="burger" id="burger">
                 <span></span>
@@ -43,7 +43,7 @@
             </button>
             <button> 
                 <img src="assets/icons/user.png" alt="">
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'account-page.php' : 'signup-page.php'; ?>">Account</a>         
+                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php'; ?>">Account</a>     
             </button>
             <button>
                 <img src="assets/icons/cart.png" alt="Cart">

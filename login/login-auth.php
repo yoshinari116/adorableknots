@@ -17,13 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $role = $user['role'];
        
         if($role == 'admin'){
-            header(header: 'Location: ../admin/admin-page.php');
+            header('Location: ../admin/admin-page.php');
         }else{
-            header(header: 'Location: ../home-page.php');
+            header('Location: ../home.php');
         }exit;
 
 
-        header(header: 'Location: ../store-page.php');
+        header('Location: ../home.php');
         exit;
     }
     else{
