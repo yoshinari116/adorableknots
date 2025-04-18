@@ -74,100 +74,103 @@ if (isset($_SESSION['user'])) {
 
     <div class="container">
         <div class="account-header">Your Account</div>
-        <form class="account-container" action="update-account.php" method="post" id="accountForm">
+        <div class="account-container">
+            <form class="account-container-form" action="update-account.php" method="post" id="accountForm">
 
-            <!-- FULL NAME DISPLAY ROW -->
-            <div class="info-row">
-                <label><strong>Full Name:</strong></label>
-                <div class="input-group">
-                    <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname']) ?>" readonly class="readonly-input">
+                <!-- FULL NAME DISPLAY ROW -->
+                <div class="info-row">
+                    <label><strong>Full Name:</strong></label>
+                    <div class="input-group">
+                        <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname']) ?>" readonly class="readonly-input">
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="edit-btn" data-field="fullname" data-state="edit">
+                            <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
+                        </button>
+                        <button type="button" class="save-btn" data-field="fullname" style="display: none;">
+                            <img src="assets/icons/save.png" alt="Save" class="icon-btn">
+                        </button>
+                    </div>
                 </div>
-                <div class="button-group">
-                    <button type="button" class="edit-btn" data-field="fullname" data-state="edit">
+
+                <!-- HIDDEN FIRST & LAST NAME EDIT ROWS -->
+                <div id="fullname-edit-wrapper" style="display: none;">
+                    <div class="info-row">
+                        <label for="firstname">First Name:</label>
+                        <div class="input-group">
+                            <input type="text" name="firstname" id="firstname" value="">
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <label for="lastname">Last Name:</label>
+                        <div class="input-group">
+                            <input type="text" name="lastname" id="lastname" value="">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="info-row">
+                    <label><strong>Username:</strong></label>
+                    <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" readonly>
+                    <button type="button" class="edit-btn" data-field="username" data-state="edit">
                         <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
                     </button>
-                    <button type="button" class="save-btn" data-field="fullname" style="display: none;">
+                    <button type="button" class="save-btn" data-field="username" style="display: none;">
                         <img src="assets/icons/save.png" alt="Save" class="icon-btn">
                     </button>
                 </div>
-            </div>
 
-            <!-- HIDDEN FIRST & LAST NAME EDIT ROWS -->
-            <div id="fullname-edit-wrapper" style="display: none;">
                 <div class="info-row">
-                    <label for="firstname">First Name:</label>
-                    <div class="input-group">
-                        <input type="text" name="firstname" id="firstname" value="">
-                    </div>
+                    <label><strong>Email:</strong></label>
+                    <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
+                    <button type="button" class="edit-btn" data-field="email" data-state="edit">
+                        <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
+                    </button>
+                    <button type="button" class="save-btn" data-field="email" style="display: none;">
+                        <img src="assets/icons/save.png" alt="Save" class="icon-btn">
+                    </button>
                 </div>
+
                 <div class="info-row">
-                    <label for="lastname">Last Name:</label>
-                    <div class="input-group">
-                        <input type="text" name="lastname" id="lastname" value="">
-                    </div>
+                    <label><strong>Phone Number:</strong></label>
+                    <input type="phone" name="phone" value="<?= htmlspecialchars($user['phone']) ?>" readonly>
+                    <button type="button" class="edit-btn" data-field="phone" data-state="edit">
+                        <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
+                    </button>
+                    <button type="button" class="save-btn" data-field="phone" style="display: none;">
+                        <img src="assets/icons/save.png" alt="Save" class="icon-btn">
+                    </button>
                 </div>
-            </div>
 
+                <!-- Button trigger modal -->
+                <button type="button" class="change-password-btn" data-bs-toggle="modal" data-bs-target="#changePassword">
+                Change Password
+                </button>
 
-            <div class="info-row">
-                <label><strong>Username:</strong></label>
-                <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" readonly>
-                <button type="button" class="edit-btn" data-field="username" data-state="edit">
-                    <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
-                </button>
-                <button type="button" class="save-btn" data-field="username" style="display: none;">
-                    <img src="assets/icons/save.png" alt="Save" class="icon-btn">
-                </button>
-            </div>
-
-            <div class="info-row">
-                <label><strong>Email:</strong></label>
-                <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
-                <button type="button" class="edit-btn" data-field="email" data-state="edit">
-                    <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
-                </button>
-                <button type="button" class="save-btn" data-field="email" style="display: none;">
-                    <img src="assets/icons/save.png" alt="Save" class="icon-btn">
-                </button>
-            </div>
-
-            <div class="info-row">
-                <label><strong>Phone Number:</strong></label>
-                <input type="phone" name="phone" value="<?= htmlspecialchars($user['phone']) ?>" readonly>
-                <button type="button" class="edit-btn" data-field="phone" data-state="edit">
-                    <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
-                </button>
-                <button type="button" class="save-btn" data-field="phone" style="display: none;">
-                    <img src="assets/icons/save.png" alt="Save" class="icon-btn">
-                </button>
-            </div>
-
-            <!-- Button trigger modal -->
-            <button type="button" class="change-password-btn" data-bs-toggle="modal" data-bs-target="#changePassword">
-            Change Password
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="changePassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="changePasswordLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            body daw
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Understood</button>
+                <!-- Modal -->
+                <div class="modal fade" id="changePassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="changePasswordLabel">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                body daw
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Understood</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-          
+            
 
-        </form>
+            </form>
+        </div>
+        
     </div>
 
     <script>
