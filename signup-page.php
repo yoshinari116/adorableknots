@@ -22,7 +22,7 @@ session_start();
         <div class="signup-header">SIGN UP</div>
         <div class="signup-container">
             <div class="signup-form">
-                <form action="register.php" method="POST">
+                <form action="login/register.php" method="POST">
                     <input type="text" name="first_name" placeholder="First Name" required>
                     <input type="text" name="last_name" placeholder="Last Name" required>
                     <input type="email" name="email" placeholder="Email" required>

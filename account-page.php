@@ -25,7 +25,7 @@ if (isset($_SESSION['user'])) {
     <!-- Styles -->
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/account-page.css">
-    <link rel="stylesheet" href="css/navbar.css"> <!-- ✅ Added this line -->
+    <link rel="stylesheet" href="css/navbar.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

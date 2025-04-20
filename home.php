@@ -99,7 +99,7 @@
         <div class="collection-container">
             <div class="collection-highlight-container">
                 <div class="collection-highlight-img-A"></div>
-                <div class="collection-highlight-content">Crafted with Care from Petals to Plush, <br>Made to Warm Your Heart</div>
+                <div class="collection-highlight-content-A">Crafted with Care from Petals to Plush, <br>Made to Warm Your Heart</div>
             </div>
             <div class="collection-cards-container">
                 <div class="collection-card">
