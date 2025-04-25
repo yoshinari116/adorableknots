@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
     $password = trim($_POST['password']);
     $confirm_password = trim($_POST['confirm_password']);
     $user_type = 'user'; // default type
@@ -30,14 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } while ($stmt->rowCount() > 0);
 
     // Insert new user
-    $sql = "INSERT INTO users_tbl (user_id, fullname, username, email, phone, password, user_type) 
-            VALUES (:user_id, :fullname, :username, :email, :phone, :password, :user_type)";
+    $sql = "INSERT INTO users_tbl (user_id, fullname, username, email, password, user_type) 
+            VALUES (:user_id, :fullname, :username, :email, :password, :user_type)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->bindParam(':fullname', $fullname);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':phone', $phone);
     $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT)); // Hash password
     $stmt->bindParam(':user_type', $user_type);
 

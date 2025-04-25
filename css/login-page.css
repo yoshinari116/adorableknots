@@ -99,6 +99,10 @@ body {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 5px;
 }
 
 .login-form button {

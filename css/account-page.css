@@ -48,59 +48,107 @@ body {
 }
 
 .container {
-    border: 1px solid red;
     position: absolute;
-    height: 800px;
-    width: 50%;
+    height: 600px;  
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: -100px;
-}
-
-.account-header {   
-    width: 100%;
-    height: 40px;
-    font-family: 'Dosis', sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: white;
-    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
-    padding: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 100px;
 }
 
 .account-container { 
-    height: 80%;
-    width: 700px;
-    background-color: rgb(220, 148, 148);
-    padding: 30px;
+    height: 500px;
+    width: 800px;
+    background-color: white;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 30px;
     border-radius: 5px;   
     box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189);  
 }
 
-.account-container-form { 
-    height: 80%;
-    width: 600px;
-    background-color: white;
-    padding: 30px;
+.account-nav-links {   
+    /* border: 1px solid red; */
+    border-right: 1px solid #D6D6D6; 
+    height: 100%;  
+    width: 180px;
+    display: flex;
+    gap: 10px;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-nav-links-header{
+    padding: 20px 1px;
+    width: 100%; 
+    font-family: 'Dosis', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #5E5166;
+    letter-spacing: 1px; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-nav-links-header img{
+    width: 25px;
+}
+
+.nav-button {
+    width: 100%;
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;  
+    text-align: left;
+    color: #727272;
+    background: none;
+    border: none;
+    padding: 10px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Active style */
+.nav-button.active {
+    color: #FF7EBC;
+}
+
+/* Hover style only for non-active buttons */
+.nav-button:hover:not(.active) {
+    color: #FF7EBC;
+}
+
+
+/* Active link - locked styles */
+.nav-link.active {
+    color: #FF7EBC;
+    pointer-events: none; /* optional: disables hover/focus on active */
+}
+
+/* Hover for non-active links only */
+.nav-link:hover:not(.active) {
+    color: #FF7EBC;
+}
+
+.account-container-form {
+    height: 100%;
+    width: 500px;
+    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;   
 }
 
+
 .info-row {
-    /* border: 1px solid red; */
     height: 50px;
     width: 550px;
     display: flex;
@@ -112,8 +160,8 @@ body {
 .info-row label{
     width: 150px;
     font-family: 'Dosis', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 800;
     color: #5E5166;
     letter-spacing: 1px;
     text-align: end;
@@ -125,11 +173,11 @@ body {
     max-width: 300px;
     flex: 1;
     padding: 8px;
-    font-family: 'Dosis', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: #5E5166;
-    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #696969;
+    border-radius: 5px;
 }
 
 .info-row button {
@@ -153,23 +201,6 @@ body {
 
 #fullname-edit-wrapper label {
     font-weight: 800;
-    font-size: 18px;
+    font-size: 16px;
     display: inline-block;
-}
-
-.change-password-btn{
-    border: 2px solid #5E5166;
-    height: 50px;
-    width: 500px;
-    background: white;
-    font-family: 'Dosis', sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    color: #5E5166;
-    letter-spacing: 1px;
-    border-radius: 5px;
-}
-
-.change-password-btn:hover {
-    background: rgb(234, 234, 234);
 }

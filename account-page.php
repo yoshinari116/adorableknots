@@ -13,6 +13,7 @@ if (isset($_SESSION['user'])) {
     header('Location: login-page.php');
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -44,26 +45,11 @@ if (isset($_SESSION['user'])) {
         </div>
 
         <div class="nav-links">
-            <button> 
-                <img src="assets/icons/home.png" alt="">
-                <a href="home.php">Home</a>
-            </button>
-            <button> 
-                <img src="assets/icons/bag.png" alt="">
-                <a href="store-page.php">Shop Now</a>
-            </button>
-            <button> 
-                <img src="assets/icons/Chat.png" alt="">
-                <a href="#">Contact Us</a>
-            </button>
-            <button class="active"> 
-                <img src="assets/icons/user.png" alt="">
-                <a href="account-page.php">Account</a>          
-            </button>
-            <button>
-                <img src="assets/icons/cart.png" alt="Cart">
-                <a href="#">Cart ( 0 )</a>
-            </button>
+            <button><img src="assets/icons/home.png"><a href="home.php">Home</a></button>
+            <button><img src="assets/icons/bag.png"><a href="store-page.php">Shop Now</a></button>
+            <button><img src="assets/icons/Chat.png"><a href="#">Contact Us</a></button>
+            <button class="active"><img src="assets/icons/user.png"><a href="account-page.php">Account</a></button>
+            <button><img src="assets/icons/cart.png"><a href="#">Cart ( 0 )</a></button>
         </div>
     </nav>
 
@@ -73,13 +59,23 @@ if (isset($_SESSION['user'])) {
     </div>
 
     <div class="container">
-        <div class="account-header">Your Account</div>
         <div class="account-container">
-            <form class="account-container-form" action="update-account.php" method="post" id="accountForm">
+            <div class="account-nav-links">
+                <div class="account-nav-links-header">
+                    <img src="assets/icons/user.png" alt="">
+                    My Account
+                </div>
+                <button class="nav-button active" onclick="location.href='account-page.php'">Profile</button>
+                <button class="nav-button" onclick="location.href='address-page.php'">Address</button>
+                <button class="nav-button" onclick="location.href='#'">Change Password</button>
+                <button class="nav-button" onclick="location.href='#'">My Purchases</button>
+            </div>
+
+            <form class="account-container-form" action="update-account.php" method="post" id="accountForm" enctype="multipart/form-data">
 
                 <!-- FULL NAME DISPLAY ROW -->
                 <div class="info-row">
-                    <label><strong>Full Name:</strong></label>
+                    <label>Full Name:</label>
                     <div class="input-group">
                         <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname']) ?>" readonly class="readonly-input">
                     </div>
@@ -109,9 +105,8 @@ if (isset($_SESSION['user'])) {
                     </div>
                 </div>
 
-
                 <div class="info-row">
-                    <label><strong>Username:</strong></label>
+                    <label>Username:</label>
                     <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" readonly>
                     <button type="button" class="edit-btn" data-field="username" data-state="edit">
                         <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
@@ -122,7 +117,7 @@ if (isset($_SESSION['user'])) {
                 </div>
 
                 <div class="info-row">
-                    <label><strong>Email:</strong></label>
+                    <label>Email:</label>
                     <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
                     <button type="button" class="edit-btn" data-field="email" data-state="edit">
                         <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
@@ -131,150 +126,9 @@ if (isset($_SESSION['user'])) {
                         <img src="assets/icons/save.png" alt="Save" class="icon-btn">
                     </button>
                 </div>
-
-                <div class="info-row">
-                    <label><strong>Phone Number:</strong></label>
-                    <input type="phone" name="phone" value="<?= htmlspecialchars($user['phone']) ?>" readonly>
-                    <button type="button" class="edit-btn" data-field="phone" data-state="edit">
-                        <img src="assets/icons/edit.png" alt="Edit" class="icon-btn">
-                    </button>
-                    <button type="button" class="save-btn" data-field="phone" style="display: none;">
-                        <img src="assets/icons/save.png" alt="Save" class="icon-btn">
-                    </button>
-                </div>
-
-                <!-- Button trigger modal -->
-                <button type="button" class="change-password-btn" data-bs-toggle="modal" data-bs-target="#changePassword">
-                Change Password
-                </button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="changePassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="changePasswordLabel">Modal title</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                body daw
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Understood</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-
             </form>
         </div>
-        
     </div>
-
-    <script>
-    document.querySelectorAll('.edit-btn').forEach(editBtn => {
-        editBtn.addEventListener('click', () => {
-            const field = editBtn.dataset.field;
-            const state = editBtn.dataset.state;
-            const saveBtn = document.querySelector(`.save-btn[data-field="${field}"]`);
-            const icon = editBtn.querySelector('img');
-
-            if (field === 'fullname') {
-                const fullInput = document.querySelector('input[name="fullname"]');
-                const editWrapper = document.getElementById('fullname-edit-wrapper');
-                const firstInput = document.getElementById('firstname');
-                const lastInput = document.getElementById('lastname');
-
-                if (state === 'edit') {
-                    const [first, ...lastParts] = fullInput.value.split(' ');
-                    firstInput.value = first;
-                    lastInput.value = lastParts.join(' ');
-
-                    editWrapper.style.display = 'block';
-                    saveBtn.style.display = 'inline-block';
-                    icon.src = 'assets/icons/cancel.png';
-                    icon.alt = 'Cancel';
-                    editBtn.dataset.state = 'cancel';
-                } else {
-                    editWrapper.style.display = 'none';
-                    saveBtn.style.display = 'none';
-                    icon.src = 'assets/icons/edit.png';
-                    icon.alt = 'Edit';
-                    editBtn.dataset.state = 'edit';
-                }
-            } else {
-                // default for other fields
-                const input = document.querySelector(`input[name="${field}"]`);
-                if (state === 'edit') {
-                    input.removeAttribute('readonly');
-                    input.focus();
-                    saveBtn.style.display = 'inline-block';
-                    icon.src = 'assets/icons/cancel.png';
-                    icon.alt = 'Cancel';
-                    editBtn.dataset.state = 'cancel';
-                } else {
-                    input.setAttribute('readonly', true);
-                    saveBtn.style.display = 'none';
-                    icon.src = 'assets/icons/edit.png';
-                    icon.alt = 'Edit';
-                    editBtn.dataset.state = 'edit';
-                }
-            }
-        });
-    });
-
-
-    document.querySelectorAll('.save-btn').forEach(saveBtn => {
-        saveBtn.addEventListener('click', () => {
-            const field = saveBtn.dataset.field;
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'account/update-account.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    if (field === 'fullname') {
-                        const fullInput = document.querySelector('input[name="fullname"]');
-                        const first = document.getElementById('firstname').value;
-                        const last = document.getElementById('lastname').value;
-                        fullInput.value = `${first} ${last}`;
-
-                        document.getElementById('fullname-edit-wrapper').style.display = 'none';
-                    } else {
-                        document.querySelector(`input[name="${field}"]`).setAttribute('readonly', true);
-                    }
-
-                    saveBtn.style.display = 'none';
-                    const editBtn = document.querySelector(`.edit-btn[data-field="${field}"]`);
-                    const icon = editBtn.querySelector('img');
-                    icon.src = 'assets/icons/edit.png';
-                    icon.alt = 'Edit';
-                    editBtn.dataset.state = 'edit';
-                } else {
-                    alert('Error saving changes.');
-                }
-            };
-
-            let data = '';
-            if (field === 'fullname') {
-                const first = encodeURIComponent(document.getElementById('firstname').value);
-                const last = encodeURIComponent(document.getElementById('lastname').value);
-                data = `field=fullname&firstname=${first}&lastname=${last}`;
-            } else {
-                const value = encodeURIComponent(document.querySelector(`input[name="${field}"]`).value);
-                data = `field=${field}&value=${value}`;
-            }
-
-            xhr.send(data);
-        });
-    });
-
-    </script>
-
-
 
     <style>
         .icon-btn {
@@ -282,12 +136,11 @@ if (isset($_SESSION['user'])) {
             height: 20px;
             vertical-align: middle;
         }
-
     </style>
 
+    <script src="assets/js/profile-image-preview.js"></script>
+    <script src="javascript/account-update.js"></script>
     <script src="javascript/navbar-icons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
-

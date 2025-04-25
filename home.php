@@ -193,13 +193,20 @@
     <div class="quote"><p>"Every stitch is made with love, every knot weaves a story, and every creation is a timeless piece crafted just for you."</p></div>
         
     <section class="footer">
+        <div class="footer-others">
+            <p> Shipping: Nationwide via J&T / LBC</p>
+            <p> Made to order: Crafting starts after you place an order </p>
+            <p> Support: DM us anytime on FB or IG</p>
+        </div>
+        <div class="footer-line"></div>
+        
         <div class="footer-info">
             <div class="footer-logo">
             <img src="assets/web_img/ak-logo.png" alt="Adorable Knots Logo">
             </div>
             <div class="footer-content">
                 <div class="footer-content-header">Contact</div>
-                <p>alexandrajingco352@gmail.com<br>63 0919 123 4567</p>
+                <p>alexandrajingco352@gmail.com<br>0919 123 4567</p>
             </div>
             <div class="footer-content">
                 <div class="footer-content-header">Address</div>
@@ -213,13 +220,9 @@
                     <a href="#"><img src="assets/icons/instagram.png" alt="">Instagram</a>
                 </p>  
             </div>
-        </div>
-        <div class="footer-line"></div>
-        <div class="footer-others">
-            <p> Shipping: Nationwide via J&T / LBC</p>
-            <p> Made to order: Crafting starts after you place an order </p>
-            <p> Support: DM us anytime on FB or IG</p>
-        </div>
+        </div> 
+        
+       
         
     </section>
     

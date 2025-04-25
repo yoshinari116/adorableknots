@@ -2,6 +2,7 @@
 session_start();
 include('../database/db.php');
 
+// Check if the user is logged in
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(403);
     exit;
@@ -19,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Special handling for fullname
     if ($field === 'fullname') {
         $firstname = trim($_POST['firstname'] ?? '');
         $lastname = trim($_POST['lastname'] ?? '');
@@ -32,17 +32,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $value = $firstname . ' ' . $lastname;
     }
 
+    // Update the specified field in the database
     $sql = "UPDATE users_tbl SET $field = :value WHERE user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':value', $value);
     $stmt->bindParam(':user_id', $user_id);
 
     if ($stmt->execute()) {
-        $_SESSION['user'][$field] = $value;
-        echo 'success';
+        // Fetch the updated user data from the database
+        $query = $conn->prepare("SELECT * FROM users_tbl WHERE user_id = :user_id");
+        $query->bindParam(':user_id', $user_id);
+        $query->execute();
+        $updatedUser = $query->fetch(PDO::FETCH_ASSOC);
+
+        // Update the session
+        $_SESSION['user'] = $updatedUser;
+
+        echo 'Account updated successfully.';
     } else {
         http_response_code(500);
-        echo 'Update failed.';
+        echo 'Failed to update account.';
     }
 }
 ?>

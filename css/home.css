@@ -714,7 +714,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+
     align-items: center;
     
 }
@@ -735,17 +735,14 @@ body {
 
 }
 
-.footer-logo img {
-    height: 70px;
+.footer-logo img {  
+    height: 100px;
 }   
 
 .footer-content {
     height: 200px;
     width: 400px;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: white;
+    
     letter-spacing: 1px;
     text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089); 
     display: flex;
@@ -753,18 +750,25 @@ body {
     
 }
 
-.footer-content-header {    
+.footer-content-header {  
+    color: white;  
+    font-family: 'Dosis', sans-serif;
     font-size: 18px;
     font-weight: 800;
 }
 
 .footer-content p {
     line-height: 40px;
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+    letter-spacing: 3px;
 }
 
 .footer-content a {
     text-decoration: none;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Dosis', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: white;
@@ -781,13 +785,15 @@ body {
 }
 
 .footer-line {
-    width: 90%;
-    height: 2px;
-    background: white;
+    margin-bottom: 80px;
+    width: 95%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.342);
     border-radius: 5px;
 }
 
 .footer-others{
+    margin-top: 50px;
     width: 1500px;
     display: flex;
     justify-content: space-between;
@@ -795,8 +801,8 @@ body {
 }
 
 .footer-others p {
-    padding-top: 50px;
-    font-family: 'Inter', sans-serif;
+    /* padding-bottom: 50px; */
+    font-family: 'Dosis', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: white;
