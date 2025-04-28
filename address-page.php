@@ -92,7 +92,7 @@ if (isset($_SESSION['user'])) {
 
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" name="phone" placeholder="Phone Number" required pattern="09\d{9}" maxlength="11">
+                                            <input type="number" class="form-control" name="phone" placeholder="Phone Number" maxlength="11" required>
                                         </div>
                                         <div class="mb-3">
                                             <input type="text" class="form-control" name="region" placeholder="Region" required>
@@ -123,7 +123,6 @@ if (isset($_SESSION['user'])) {
                         </div>
                     </div>
                     <!-- address modal -->
-
                 </div>
 
                 <?php
@@ -162,6 +161,16 @@ if (isset($_SESSION['user'])) {
             vertical-align: middle;
         }
     </style>
+
+
+
+    <script>
+    const phoneInput = document.querySelector('input[name="phone"]');
+
+    phoneInput.addEventListener('input', () => {
+        phoneInput.value = phoneInput.value.replace(/\s+/g, '');
+    });
+    </script>
 
     <script src="javascript/navbar-icons.js"></script>
     <script src="javascript/validate-phone.js"></script>
