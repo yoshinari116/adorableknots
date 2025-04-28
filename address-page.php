@@ -35,7 +35,6 @@ if (isset($_SESSION['user'])) {
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css"> <!-- also updated -->
 </head>
 
 <body>
@@ -75,7 +74,6 @@ if (isset($_SESSION['user'])) {
                 <div class="address-header">
                     My Addresses
 
-                    <!-- Add New Address Button -->
                     <button type="button" class="address-btn" data-bs-toggle="modal" data-bs-target="#manageAddress">
                         Add New Address
                     </button>
@@ -92,10 +90,15 @@ if (isset($_SESSION['user'])) {
 
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <input type="number" class="form-control" name="phone" placeholder="Phone Number" maxlength="11" required>
+                                            <input type="tel" name="phone" id="phone_number" 
+                                            class="form-control" 
+                                            placeholder="Phone Number (e.g. 0912 345 6789)" 
+                                            required pattern="09\d{2}\s\d{3}\s\d{4}" 
+                                            minlength="13" maxlength="13" 
+                                            autocomplete="off">
                                         </div>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" name="region" placeholder="Region" required>
+                                            <input type="text" class="form-control" name="region" placeholder="Region (e.g., North Luzon)" required>
                                         </div>
                                         <div class="mb-3">
                                             <input type="text" class="form-control" name="province" placeholder="Province" required>
@@ -137,19 +140,24 @@ if (isset($_SESSION['user'])) {
                 <div class="display-addresses-container">
                     <?php foreach ($addresses as $row): 
                         $fullAddress = "{$row['street_details']}<br>{$row['barangay']}, {$row['city']}, {$row['province']}, {$row['region']}, {$row['postal_code']}";
+                        
+                        // Format the phone number
+                        $phone = preg_replace('/\D/', '', $row['phone']);  // Remove non-numeric characters
+                        if (strlen($phone) == 11) {
+                            $formattedPhone = substr($phone, 0, 4) . ' ' . substr($phone, 4, 3) . ' ' . substr($phone, 7, 4);
+                        } else {
+                            $formattedPhone = $row['phone'];  // If not 11 digits, leave it as is
+                        }
                     ?>
                         <div class="display-address">
-                            <p><?= htmlspecialchars($row['phone']) ?></p>
-                            <p><?= $fullAddress ?></p> <!-- Use $fullAddress directly to allow <br> to work -->
+                            <p><?= htmlspecialchars($formattedPhone) ?></p>
+                            <p><?= $fullAddress ?></p>
                             <?php if (!empty($row['IsDefault']) && $row['IsDefault']): ?>
                                 <span class="default-badge">Default Address</span>
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
-
-
-
             </div>
         </div>
     </div>
@@ -162,18 +170,34 @@ if (isset($_SESSION['user'])) {
         }
     </style>
 
-
-
     <script>
-    const phoneInput = document.querySelector('input[name="phone"]');
+        const phoneInput = document.getElementById("phone_number");
 
-    phoneInput.addEventListener('input', () => {
-        phoneInput.value = phoneInput.value.replace(/\s+/g, '');
-    });
+        phoneInput.addEventListener("input", function(e) {
+            let numbers = this.value.replace(/\D/g, '');
+            if (numbers.length > 11) numbers = numbers.slice(0, 11);
+
+            let formatted = '';
+            if (numbers.length > 0) {
+                formatted += numbers.substring(0, 4);
+            }
+            if (numbers.length >= 5) {
+                formatted += ' ' + numbers.substring(4, 7);
+            }
+            if (numbers.length >= 8) {
+                formatted += ' ' + numbers.substring(7, 11);
+            }
+
+            this.value = formatted;
+        });
+
+        document.getElementById("addressForm").addEventListener("submit", function(event) {
+            phoneInput.value = phoneInput.value.replace(/\s/g, '');
+        });
     </script>
 
+
     <script src="javascript/navbar-icons.js"></script>
-    <script src="javascript/validate-phone.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

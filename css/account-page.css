@@ -70,7 +70,6 @@ body {
 }
 
 .account-nav-links {   
-    /* border: 1px solid red; */
     border-right: 1px solid #D6D6D6; 
     height: 100%;  
     width: 180px;
@@ -149,6 +148,7 @@ body {
 
 
 .info-row {
+    /* border: 1px solid red; */
     height: 50px;
     width: 550px;
     display: flex;
@@ -161,7 +161,7 @@ body {
     width: 150px;
     font-family: 'Dosis', sans-serif;
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 600;
     color: #5E5166;
     letter-spacing: 1px;
     text-align: end;
@@ -200,7 +200,7 @@ body {
 }
 
 #fullname-edit-wrapper label {
-    font-weight: 800;
+    font-weight: 600;
     font-size: 16px;
     display: inline-block;
 }

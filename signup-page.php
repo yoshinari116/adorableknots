@@ -16,26 +16,34 @@ session_start();
 <body>
     <div class="Back">
         <a href="home.php">BACK TO HOME</a>
-        <img src="assets/web_img/back-white.png" alt="">
+        <img src="assets/icons/back-white.png" alt="Back to Home">
     </div>
     <div class="container">
         <div class="signup-header">SIGN UP</div>
         <div class="signup-container">
             <div class="signup-form">
-                <form action="login/register.php" method="POST">
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="error-message">
+                        <p><?php echo $_SESSION['error']; ?></p>
+                    </div>
+                    <?php unset($_SESSION['error']); ?>
+                <?php endif; ?>
+                <form action="login/register.php" method="POST" id="signupForm">
+                    <input type="text" name="username" placeholder="Username / Nickname" required>
                     <input type="text" name="first_name" placeholder="First Name" required>
                     <input type="text" name="last_name" placeholder="Last Name" required>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" minlength="8" maxlength="16" required />
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" minlength="8" maxlength="16" required />
                     <button type="submit">SUBMIT</button>
                 </form>
+
                 <div class="divider">
                     <p>OR</p>
                 </div>
-               <div class="login-suggestion">
-                Already have an account?<a href="login-page.php">Log In</a>
-               </div>
+                <div class="login-suggestion">
+                    Already have an account?<a href="login-page.php">Log In</a>
+                </div>
             </div>
             <div class="info-section">
                 <div class="logo">
@@ -45,5 +53,6 @@ session_start();
             </div>
         </div>
     </div>
+
 </body>
 </html>

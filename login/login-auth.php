@@ -6,33 +6,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $identifier = $_POST['identifier'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE BINARY (username = :identifier OR email = :identifier) AND password = :password");
-    $stmt->execute(['identifier' => $identifier, 'password' => $password]);    
+    if (empty($identifier) || empty($password)) {
+        $error = "Please fill in both fields!";
+        header('Location: ../login-page.php?error=' . urlencode($error));
+        exit;
+    }
+
+    // Fetch the user by username or email
+    $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE username = :identifier OR email = :identifier");
+    $stmt->execute(['identifier' => $identifier]);    
     $user = $stmt->fetch();
 
     if ($user) {
-        $_SESSION['logged_in'] = true;
-        $_SESSION['user'] = $user;
+        $hashed_password_from_db = $user['password'];
 
-        $role = $user['role'];
-       
-        if($role == 'admin'){
-            header('Location: ../admin/admin-page.php');
-        }else{
-            header('Location: ../home.php');
-        }exit;
+        if (password_verify($password, $hashed_password_from_db)) { 
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user'] = $user;
 
+            $user_type = $user['user_type'];
 
-        header('Location: ../home.php');
-        exit;
-    }
-    else{
+            // Redirect based on user type
+            if ($user_type == 'admin') {
+                header('Location: ../admin/admin-page.php');
+            } else {
+                header('Location: ../home.php');
+            }
+            exit;
+        } else {
+            $error = "Invalid username or password!";
+            header('Location: ../login-page.php?error=' . urlencode($error));
+            exit;
+        }
+    } else {
         $error = "Invalid username or password!";
-        header(header: 'Location: ../login-page.php?error=' . $error);
+        header('Location: ../login-page.php?error=' . urlencode($error));
         exit;
     }
-} else{
-    header(header: 'Location: ../login-page.php');
+} else {
+    header('Location: ../login-page.php');
     exit;
 }
 ?>
