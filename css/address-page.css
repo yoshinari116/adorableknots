@@ -134,7 +134,8 @@ body {
 }
 
 .display-addresses-container {
-    max-height: 300px; 
+    max-height: 350px; 
+    width: 100%;
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -144,14 +145,61 @@ body {
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-bottom: 10px;
-    background-color: #f9f9f9;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    position: relative; /* Allows positioning child elements */
+}
+
+.set-default-btn {
+    border: 2px solid #FF7EBC;
+    color: #FF7EBC;
+    font-family: 'Dosis', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;    
+    padding: 4px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.set-default-btn:hover {
+    background-color: #FF7EBC;
+    color: white; /* Slightly darker on hover */
 }
 
 .default-badge {
-    color: green;
-    font-weight: bold;
-    margin-top: 8px;
-    display: inline-block;
+    color: #FF7EBC;
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Align edit and delete buttons to the right */
+.address-actions {
+    position: absolute;
+    right: 10px;  /* Adjust as needed */
+    bottom: 10px; /* Adjust as needed */
+}
+
+.address-actions button {
+    margin-left: 5px;
+    border: 2px solid #5E5166;
+    color: #5E5166;
+    font-family: 'Dosis', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 15px;
+    border-radius: 5px;
+}
+
+.address-actions button:hover {
+    background-color: transparent;
+    border: 2px solid #5E5166;
+    color: #5E5166;
 }
 
 
