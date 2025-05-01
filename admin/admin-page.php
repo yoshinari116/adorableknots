@@ -167,71 +167,118 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
 
-        <div class="products-container container py-4">
-            <div class="products-container-header">
-                <h1>PRODUCT LIST</h1>
-                <button type="button" class="btn" style="background-color:#9400e3; color: white" data-bs-toggle="modal" data-bs-target="#addproduct">ADD NEW PRODUCT</button>
-            </div>
+    <div class="products-container container py-4">
+        <div class="products-container-header">
+            <h1>PRODUCT LIST</h1>
+            <button type="button" class="btn" style="background-color:#8c8c8c; color: white" data-bs-toggle="modal" data-bs-target="#addproduct">ADD NEW PRODUCT</button>
+        </div>
 
-            <div class="product-grid">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $row): ?>
-                        <!-- Product Card -->
-                        <div class="product-card" data-bs-toggle="modal" data-bs-target="#editProductModal<?= $row['product_id'] ?>">
-                            <img src="../uploads/<?= htmlspecialchars($row['product_img']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>" class="product-image">
-                            <div class="card-body">
-                                <div class="product-name"><?= htmlspecialchars($row['product_name']) ?></div>
-                                <p class="product-price"><strong>₱<?= number_format($row['product_price'], 2) ?></strong></p>
-                                <span class="status <?= $row['product_status'] === 'Available' ? 'available' : 'not-available' ?>">
-                                    <?= $row['product_status'] ?>
-                                </span>
-                            </div>
+        <div class="product-grid">
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $row): ?>
+                    <!-- Product Card -->
+                    <div class="product-card" data-bs-toggle="modal" data-bs-target="#editProductModal<?= $row['product_id'] ?>">
+                        <img src="../uploads/<?= htmlspecialchars($row['product_img']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>" class="product-image">
+                        <div class="card-body">
+                            <div class="product-name"><?= htmlspecialchars($row['product_name']) ?></div>
+                            <p class="product-price"><strong>₱<?= number_format($row['product_price'], 2) ?></strong></p>
+                            <span class="status <?= $row['product_status'] === 'Available' ? 'available' : 'not-available' ?>">
+                                <?= $row['product_status'] ?>
+                            </span>
                         </div>
+                    </div>
 
-                        <!-- Edit Modal -->
-                        <div class="modal fade" id="editProductModal<?= $row['product_id'] ?>" tabindex="-1" aria-labelledby="editProductModalLabel<?= $row['product_id'] ?>" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content" onsubmit="return confirmEdit()">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editProductModalLabel<?= $row['product_id'] ?>">Edit Product</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editProductModal<?= $row['product_id'] ?>" tabindex="-1" aria-labelledby="editProductModalLabel<?= $row['product_id'] ?>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content" onsubmit="return buildCustomizationJSON(<?= $row['product_id'] ?>)">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editProductModalLabel<?= $row['product_id'] ?>">Edit Product</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
+
+                                    <!-- Product Name -->
+                                    <div class="mb-3">
+                                        <label>Product Name</label>
+                                        <input type="text" class="form-control" name="product_name" value="<?= htmlspecialchars($row['product_name']) ?>" required>
                                     </div>
-                                    <div class="modal-body">
-                                        <input type="hidden" name="product_id" value="<?= $row['product_id'] ?>">
-                                        <div class="mb-3">
-                                            <label>Product Name</label>
-                                            <input type="text" class="form-control" name="product_name" value="<?= htmlspecialchars($row['product_name']) ?>" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Price</label>
-                                            <input type="number" class="form-control" name="product_price" value="<?= $row['product_price'] ?>" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Status</label>
-                                            <select name="product_status" class="form-select">
-                                                <option value="Available" <?= $row['product_status'] === 'Available' ? 'selected' : '' ?>>Available</option>
-                                                <option value="Not Available" <?= $row['product_status'] === 'Not Available' ? 'selected' : '' ?>>Not Available</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Change Image (optional)</label>
-                                            <input type="file" class="form-control" name="product_img">
-                                        </div>
+
+                                    <!-- Category -->
+                                    <div class="mb-3">
+                                        <label>Category</label>
+                                        <select name="category_id" class="form-control" required>
+                                            <?php foreach ($categories as $category): ?>
+                                                <option value="<?= $category['category_id']; ?>" <?= $row['category_id'] === $category['category_id'] ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($category['category_name']); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" name="update" class="btn btn-primary">Save changes</button>
-                                        <button type="button" class="btn btn-danger" onclick="confirmDelete(<?= $row['product_id'] ?>)">Remove Product</button>
+
+                                    <!-- Product Customizations -->
+                                    <div class="mb-3">
+                                        <label>Product Customizations</label>
+                                        <div id="customizationFields<?= $row['product_id'] ?>" class="customization-fields">
+                                            <!-- Dynamically populate existing customizations -->
+                                            <?php
+                                            // Check if customizations exist before attempting to decode it
+                                            $customizations = isset($row['customizations']) ? json_decode($row['customizations'], true) : null;
+                                            if ($customizations) {
+                                                foreach ($customizations as $type => $options) {
+                                                    foreach ($options as $option) {
+                                                        echo '<div class="input-group mb-2">
+                                                                <input type="text" class="form-control me-1" placeholder="Type (e.g., Color)" name="customization_type[]" value="' . htmlspecialchars($type) . '">
+                                                                <input type="text" class="form-control me-1" placeholder="Options (comma-separated)" name="customization_options[]" value="' . htmlspecialchars(implode(',', $options)) . '">
+                                                                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">✕</button>
+                                                            </div>';
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                        <button type="button" style="background-color:#8c8c8c; color: white; border: none; " class="btn btn-sm btn-secondary mt-2" onclick="addCustomizationField(<?= $row['product_id'] ?>)">Add Customization</button>
+                                        <input type="hidden" name="customizations" id="customizationsJson<?= $row['product_id'] ?>">
                                     </div>
-                                </form>
-                            </div>
+
+                                    <!-- Price -->
+                                    <div class="mb-3">
+                                        <label>Price</label>
+                                        <input type="number" class="form-control" name="product_price" value="<?= $row['product_price'] ?>" required>
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="mb-3">
+                                        <label>Status</label>
+                                        <select name="product_status" class="form-select">
+                                            <option value="Available" <?= $row['product_status'] === 'Available' ? 'selected' : '' ?>>Available</option>
+                                            <option value="Not Available" <?= $row['product_status'] === 'Not Available' ? 'selected' : '' ?>>Not Available</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Change Image -->
+                                    <div class="mb-3">
+                                        <label>Change Image (optional)</label>
+                                        <input type="file" class="form-control" name="product_img">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="update" style="background-color:#FF7EBC; color: white; border: none;" class="btn btn-primary">Save changes</button>
+                                    <button type="button" style="background-color:#8c8c8c; color: white; border: none;" class="btn btn-danger" onclick="confirmDelete(<?= $row['product_id'] ?>)">Remove Product</button>
+                                </div>
+                            </form>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No products found.</p>
-                <?php endif; ?>
-            </div>
+                    </div>
+
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No products found.</p>
+            <?php endif; ?>
         </div>
     </div>
+
+
 
     <?php if (isset($_SESSION['error'])): ?>
         <div class="modal fade" id="errorModal" tabindex="-1">
@@ -277,11 +324,13 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Product Name -->
                         <div class="mb-3">
                             <label>Product Name</label>
                             <input type="text" name="product_name" class="form-control" required />
                         </div>
-                        
+
+                        <!-- Category -->
                         <div class="mb-3">
                             <label>Category</label>
                             <select name="category_id" class="form-control" required>
@@ -292,21 +341,23 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                             </select>
                         </div>
 
+                        <!-- Customizations -->
                         <div class="mb-3">
                             <label>Product Customizations</label>
-                            <div id="customizationFields">
+                            <div id="customizationFields" class="customization-fields">
                                 <!-- Dynamic fields will be added here -->
                             </div>
-                            <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addCustomizationField()">Add Customization</button>
+                            <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addCustomizationField('add')">Add Customization</button>
                             <input type="hidden" name="customizations" id="customizationsJson">
                         </div>
 
-
+                        <!-- Price -->
                         <div class="mb-3">
                             <label>Product Price</label>
                             <input type="number" name="product_price" class="form-control" step="0.01" required />
                         </div>
-                        
+
+                        <!-- Status -->
                         <div class="mb-3">
                             <label>Status</label>
                             <select name="product_status" class="form-control" required>
@@ -314,7 +365,8 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                 <option value="Not Available">Not Available</option>
                             </select>
                         </div>
-                        
+
+                        <!-- Image Upload -->
                         <div class="mb-3">
                             <label>Product Image</label>
                             <input type="file" name="product_img" class="form-control" accept="image/*" required />
@@ -328,6 +380,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+
 
 
 
@@ -419,17 +472,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script>
-        // Function to add a new customization field dynamically
-        function addCustomizationField() {
-            const wrapper = document.getElementById("customizationFields");
+        // Function to add a new customization field dynamically for a given modal
+        function addCustomizationField(productId) {
+            const suffix = productId === 'add' ? '' : productId;
+            const wrapper = document.getElementById("customizationFields" + suffix);
 
             const div = document.createElement("div");
             div.classList.add("mb-2");
 
             div.innerHTML = `
                 <div class="input-group">
-                    <input type="text" class="form-control me-1" placeholder="Type (e.g., Color)" name="customization_type[]">
-                    <input type="text" class="form-control me-1" placeholder="Options (comma-separated)" name="customization_options[]">
+                    <input type="text" class="form-control me-1" placeholder="Type (e.g., Color)" name="customization_type_${suffix}[]">
+                    <input type="text" class="form-control me-1" placeholder="Options (comma-separated)" name="customization_options_${suffix}[]">
                     <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">✕</button>
                 </div>
             `;
@@ -437,23 +491,32 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             wrapper.appendChild(div);
         }
 
-        // Event listener to handle form submission and convert fields to JSON format
-        document.querySelector('form').addEventListener('submit', function (e) {
-            const types = document.querySelectorAll('input[name="customization_type[]"]');
-            const options = document.querySelectorAll('input[name="customization_options[]"]');
+        // Function to handle form submission and convert the customization fields to JSON format
+        function buildCustomizationJSON(productId) {
+            const suffix = productId === 'add' ? '' : productId;
+            const types = document.querySelectorAll(`input[name="customization_type_${suffix}[]"]`);
+            const options = document.querySelectorAll(`input[name="customization_options_${suffix}[]"]`);
             let json = {};
 
-            // Loop through the fields and create the JSON object
             types.forEach((typeInput, index) => {
                 const key = typeInput.value.trim();
                 const value = options[index].value.split(',').map(opt => opt.trim()).filter(opt => opt);
                 if (key && value.length > 0) json[key] = value;
             });
 
-            // Set the JSON string to the hidden input field
-            document.getElementById('customizationsJson').value = JSON.stringify(json);
+            document.getElementById('customizationsJson' + suffix).value = JSON.stringify(json);
+        }
+
+        // Listen for all form submissions (edit or add)
+        document.addEventListener("submit", function(e) {
+            if (e.target && e.target.matches("form")) {
+                const productIdInput = e.target.querySelector("input[name='product_id']");
+                const productId = productIdInput ? productIdInput.value : 'add';
+                buildCustomizationJSON(productId);
+            }
         });
     </script>
+
                       
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
