@@ -1,27 +1,48 @@
+body{
+    font-family: 'Inter', sans-serif;
+    padding-top: 140px;
+    margin: 0;
 
+}
 .custom-navbar {
     position: fixed;
     top: 0;
     left: 0;
-    height: 90px;
+    height: 140px;
     width: 100%;
     background-color: white;
     z-index: 1000;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     box-shadow: 0px 2px 10px 4px rgba(0, 0, 0, 0.122);
     padding: 0;
 }
 
-.custom-navbar .nav-links {
-    height: 100%;
+.custom-navbar-header{
     width: 100%;
+    height: 50px;
+    background-color: #5E5166;
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-navbar-contents {
+    height: 90px;
+    width: 100%;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 1800px;
-    gap: 100px;
+    padding: 0;
 }
 
 .custom-navbar .logo {
@@ -38,14 +59,17 @@
     height: 100px;
 }
 
-.custom-navbar .nav-links button img {
-    width: 23px;
+.custom-navbar .nav-links {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1800px;
+    gap: 100px;
 }
 
-.custom-navbar .nav-links button:hover img,
-.custom-navbar .nav-links button.active img {
-    transition: filter 0.3s ease;
-}
+
 
 .custom-navbar .nav-links button {
     position: relative;
@@ -92,4 +116,252 @@
 .custom-navbar .nav-links button:hover a,
 .custom-navbar .nav-links button.active a {
     color: #FF7EBC;
+}
+
+
+.logout {
+    height: 100%;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout a {
+    background: #FF7EBC;
+    padding: 4px 40px;
+    text-decoration: none;
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: white;
+    border: 2px solid #FF7EBC;
+    border-radius: 5px;    
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout a:hover {
+    text-decoration: none;
+    background: none;
+    border: 2px solid #FF7EBC;
+    color: #FF7EBC;
+}
+
+.logout img{
+    height: 20px;
+}
+
+.category-sidebar {
+    position: fixed;
+    top: 140px; /* Height of navbar */
+    left: 0;
+    width: 350px;
+    height: calc(100% - 60px);
+    background-color: white;
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.category-list {
+    max-height: 350px; 
+    overflow-y: auto;  
+    overflow-x: hidden;
+    width: 250px;
+    padding: 0;
+    list-style-type: none;
+    
+}
+
+.category-item {
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.category-item:hover {
+    background-color: #f4f4f4;
+}
+
+
+.category-sidebar-header {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: #5E5166;
+    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089); 
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.nav-button {   
+    border: 1px solid red;
+    width: 250px;
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #5E5166;
+    background: none;
+    border: none;
+    padding: 5px 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-button.active {
+    color: #FF7EBC;
+}
+
+.nav-button:hover:not(.active) {
+    color: #FF7EBC;
+}
+
+.filter-status-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-form-title {
+    font-family: 'Dosis', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #5E5166;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.05);
+}
+
+.category-sidebar form {
+    margin-top: 30px;
+}
+
+.category-sidebar input {
+    margin-bottom: 10px;
+}
+
+.manage-category-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.manage-category-btn {
+    width: 200px;
+    border: 2px solid #5E5166;
+    color: #5E5166;
+    font-family: 'Dosis', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;    
+    padding: 4px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.manage-category-btn:hover {
+    background-color: transparent;
+    border: 2px solid #5E5166;
+    color: #5E5166;
+}
+
+
+
+.products-container {
+    /* border: 1px solid red; */
+    margin-left: 350px;
+    max-width: calc(100vw - 360px);
+    overflow-x: hidden;
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box; /* Ensures padding is part of the width calculation */
+}
+
+.products-container h1 {
+    color: #5E5166;
+    font-family: 'Dosis', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 1px;    
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.products-container-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #D6D6D6; 
+    padding: 20px 0px;
+    margin-bottom: 60px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px); /* Fixed column width of 220px */
+    column-gap: 50px;
+    row-gap: 50px; /* Fixed gap of 200px between columns and rows */
+    padding: 20px;
+    justify-content: start; /* Aligns the grid items to the start */
+}
+
+.product-card {
+    height: 400px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.product-image {
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 250px;
+    object-fit: fill;
+}
+
+
+.card-body {
+    width:  100%;
+    height: 100%;
+    font-family: 'Dosis', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+.product-price { 
+    font-family: 'Afacad', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+
+.status.available {
+    color: green;
+}
+
+.status.not-available {
+    color: red;
 }

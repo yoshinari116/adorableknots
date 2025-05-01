@@ -38,26 +38,22 @@ body {
 }
 
 .address-btn{
-    width: 200px;
-    border: none;
-    height: 50px;
-    font-family: 'Afacad', sans-serif;
-    font-size: 20px;
-    font-weight: 600;   
-    color: white;    
-    letter-spacing: 1px;
-    text-shadow: 0px 1px 15px rgba(0, 0, 0, 0.765);
-    background: linear-gradient(to bottom, #FF7EBC, #FF98CA, #FF7EBC);
+
+    background-color: transparent;
+    border: 2px solid #FF7EBC;
+    color: #FF7EBC;
+    font-family: 'Dosis', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;    
+    padding: 4px 15px;
     border-radius: 5px;
-    transition: transform 0.2s ease;
+    transition: background-color 0.3s;
 }
 
 .address-btn:hover {
-    border: 3px solid #FF7EBC;
-    color: #FF7EBC;
-    background: white;
-    text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.089);
-    transform: scale(1.1);
+    background-color: #FF7EBC;
+    color: white;
 }
 
 .custom-modal .modal-content {
