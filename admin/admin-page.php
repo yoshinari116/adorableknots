@@ -191,7 +191,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                     <!-- Edit Modal -->
                     <div class="modal fade" id="editProductModal<?= $row['product_id'] ?>" tabindex="-1" aria-labelledby="editProductModalLabel<?= $row['product_id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content" onsubmit="return buildCustomizationJSON(<?= $row['product_id'] ?>)">
+                            <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="editProductModalLabel<?= $row['product_id'] ?>">Edit Product</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -217,35 +217,16 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                         </select>
                                     </div>
 
-                                    <!-- Product Customizations -->
-                                    <div class="mb-3">
-                                        <label>Product Customizations</label>
-                                        <div id="customizationFields<?= $row['product_id'] ?>" class="customization-fields">
-                                            <!-- Dynamically populate existing customizations -->
-                                            <?php
-                                            // Check if customizations exist before attempting to decode it
-                                            $customizations = isset($row['customizations']) ? json_decode($row['customizations'], true) : null;
-                                            if ($customizations) {
-                                                foreach ($customizations as $type => $options) {
-                                                    foreach ($options as $option) {
-                                                        echo '<div class="input-group mb-2">
-                                                                <input type="text" class="form-control me-1" placeholder="Type (e.g., Color)" name="customization_type[]" value="' . htmlspecialchars($type) . '">
-                                                                <input type="text" class="form-control me-1" placeholder="Options (comma-separated)" name="customization_options[]" value="' . htmlspecialchars(implode(',', $options)) . '">
-                                                                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">✕</button>
-                                                            </div>';
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                                        </div>
-                                        <button type="button" style="background-color:#8c8c8c; color: white; border: none; " class="btn btn-sm btn-secondary mt-2" onclick="addCustomizationField(<?= $row['product_id'] ?>)">Add Customization</button>
-                                        <input type="hidden" name="customizations" id="customizationsJson<?= $row['product_id'] ?>">
-                                    </div>
-
                                     <!-- Price -->
                                     <div class="mb-3">
                                         <label>Price</label>
                                         <input type="number" class="form-control" name="product_price" value="<?= $row['product_price'] ?>" required>
+                                    </div>
+
+                                    <!-- Product Description -->
+                                    <div class="mb-3">
+                                        <label>Product Description</label>
+                                        <textarea name="product_description" class="form-control" rows="3" required><?= htmlspecialchars($row['product_description']) ?></textarea>
                                     </div>
 
                                     <!-- Status -->
@@ -271,12 +252,6 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
 
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No products found.</p>
-            <?php endif; ?>
-        </div>
-    </div>
 
 
 
@@ -341,21 +316,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                             </select>
                         </div>
 
-                        <!-- Customizations -->
-                        <div class="mb-3">
-                            <label>Product Customizations</label>
-                            <div id="customizationFields" class="customization-fields">
-                                <!-- Dynamic fields will be added here -->
-                            </div>
-                            <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addCustomizationField('add')">Add Customization</button>
-                            <input type="hidden" name="customizations" id="customizationsJson">
-                        </div>
-
                         <!-- Price -->
                         <div class="mb-3">
                             <label>Product Price</label>
                             <input type="number" name="product_price" class="form-control" step="0.01" required />
                         </div>
+                                                
+                        <!-- Product Description -->
+                        <div class="mb-3">
+                            <label>Product Description</label>
+                            <textarea name="product_description" class="form-control" rows="3" required></textarea>
+                        </div>
+
 
                         <!-- Status -->
                         <div class="mb-3">
@@ -471,54 +443,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <script>
-        // Function to add a new customization field dynamically for a given modal
-        function addCustomizationField(productId) {
-            const suffix = productId === 'add' ? '' : productId;
-            const wrapper = document.getElementById("customizationFields" + suffix);
-
-            const div = document.createElement("div");
-            div.classList.add("mb-2");
-
-            div.innerHTML = `
-                <div class="input-group">
-                    <input type="text" class="form-control me-1" placeholder="Type (e.g., Color)" name="customization_type_${suffix}[]">
-                    <input type="text" class="form-control me-1" placeholder="Options (comma-separated)" name="customization_options_${suffix}[]">
-                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">✕</button>
-                </div>
-            `;
-
-            wrapper.appendChild(div);
-        }
-
-        // Function to handle form submission and convert the customization fields to JSON format
-        function buildCustomizationJSON(productId) {
-            const suffix = productId === 'add' ? '' : productId;
-            const types = document.querySelectorAll(`input[name="customization_type_${suffix}[]"]`);
-            const options = document.querySelectorAll(`input[name="customization_options_${suffix}[]"]`);
-            let json = {};
-
-            types.forEach((typeInput, index) => {
-                const key = typeInput.value.trim();
-                const value = options[index].value.split(',').map(opt => opt.trim()).filter(opt => opt);
-                if (key && value.length > 0) json[key] = value;
-            });
-
-            document.getElementById('customizationsJson' + suffix).value = JSON.stringify(json);
-        }
-
-        // Listen for all form submissions (edit or add)
-        document.addEventListener("submit", function(e) {
-            if (e.target && e.target.matches("form")) {
-                const productIdInput = e.target.querySelector("input[name='product_id']");
-                const productId = productIdInput ? productIdInput.value : 'add';
-                buildCustomizationJSON(productId);
-            }
-        });
-    </script>
-
                       
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../javascript/admin-modals.js"></script>
     <script src="../javascript/admin-confirm.js"></script>
