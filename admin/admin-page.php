@@ -75,18 +75,26 @@ if ($status_filter) {
 $stmt_products->execute();
 $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adorable Knots</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Dosis:wght@200..800&display=swap" rel="stylesheet"/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Dosis:wght@200..800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/navbar.css"/>
-    <link rel="stylesheet" href="../css/admin-page.css"/>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="../css/admin-page.css">
+
 </head>
 <body>
 
@@ -170,28 +178,39 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     <div class="products-container container py-4">
         <div class="products-container-header">
             <h1>PRODUCT LIST</h1>
-            <button type="button" class="btn" style="background-color:#8c8c8c; color: white" data-bs-toggle="modal" data-bs-target="#addproduct">ADD NEW PRODUCT</button>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addproduct">ADD NEW PRODUCT</button>
         </div>
 
         <div class="product-grid">
-            <?php if (!empty($products)): ?>
+            <?php if (count($products) > 0): ?>
                 <?php foreach ($products as $row): ?>
-                    <!-- Product Card -->
                     <div class="product-card" data-bs-toggle="modal" data-bs-target="#editProductModal<?= $row['product_id'] ?>">
                         <img src="../uploads/<?= htmlspecialchars($row['product_img']) ?>" alt="<?= htmlspecialchars($row['product_name']) ?>" class="product-image">
                         <div class="card-body">
-                            <div class="product-name"><?= htmlspecialchars($row['product_name']) ?></div>
-                            <p class="product-price"><strong>₱<?= number_format($row['product_price'], 2) ?></strong></p>
-                            <span class="status <?= $row['product_status'] === 'Available' ? 'available' : 'not-available' ?>">
-                                <?= $row['product_status'] ?>
-                            </span>
+                            <div class="product-name">
+                                <?= htmlspecialchars($row['product_name']) ?>
+                            </div>
+                            <div class="product-price">
+                                ₱<?= number_format($row['product_price'], 2) ?>
+                            </div>
+                            <div class="product-description">
+                                <?= nl2br(htmlspecialchars($row['product_description'])) ?>
+                            </div> 
+                            <div class="estimated-delivery">
+                                Estimated Delivery: <?= htmlspecialchars($row['estimated_delivery']) ?>
+                            </div>
+                            <div class="status <?= $row['product_status'] === 'Available' ? 'available' : 'not-available' ?>">
+                                <?= htmlspecialchars($row['product_status']) ?>
+                            </div>
+
+
                         </div>
                     </div>
 
                     <!-- Edit Modal -->
                     <div class="modal fade" id="editProductModal<?= $row['product_id'] ?>" tabindex="-1" aria-labelledby="editProductModalLabel<?= $row['product_id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content">
+                            <form action="../product/update-product.php" method="POST" enctype="multipart/form-data" class="modal-content" onsubmit="return buildCustomizationJSON(<?= $row['product_id'] ?>)">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="editProductModalLabel<?= $row['product_id'] ?>">Edit Product</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -226,7 +245,13 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                     <!-- Product Description -->
                                     <div class="mb-3">
                                         <label>Product Description</label>
-                                        <textarea name="product_description" class="form-control" rows="3" required><?= htmlspecialchars($row['product_description']) ?></textarea>
+                                        <textarea name="product_description" class="form-control" rows="4"><?= htmlspecialchars($row['product_description']) ?></textarea>
+                                    </div>
+
+                                    <!-- Estimated Delivery -->
+                                    <div class="mb-3">
+                                        <label>Estimated Delivery</label>
+                                        <input type="text" name="estimated_delivery" class="form-control" value="<?= htmlspecialchars($row['estimated_delivery']) ?>" placeholder="(e.g. 3 - 5 days)" required />
                                     </div>
 
                                     <!-- Status -->
@@ -245,12 +270,17 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <button type="button" style="border: none;" class="btn btn-secondary" onclick="confirmDelete(<?= $row['product_id'] ?>)">Remove Product</button>
                                     <button type="submit" name="update" style="background-color:#FF7EBC; color: white; border: none;" class="btn btn-primary">Save changes</button>
-                                    <button type="button" style="background-color:#8c8c8c; color: white; border: none;" class="btn btn-danger" onclick="confirmDelete(<?= $row['product_id'] ?>)">Remove Product</button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No products found.</p>
+            <?php endif; ?>
+        </div>
 
 
 
@@ -293,7 +323,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     <div class="modal fade" id="addproduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered custom-modal">
             <div class="modal-content">
-                <form action="../product/create-products.php" method="POST" enctype="multipart/form-data">
+                <form action="../product/create-products.php" method="POST" enctype="multipart/form-data" id="addProductForm">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="addProductLabel">Add New Product</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -321,13 +351,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                             <label>Product Price</label>
                             <input type="number" name="product_price" class="form-control" step="0.01" required />
                         </div>
-                                                
+
                         <!-- Product Description -->
                         <div class="mb-3">
                             <label>Product Description</label>
                             <textarea name="product_description" class="form-control" rows="3" required></textarea>
                         </div>
 
+                        <!-- Estimated Delivery -->
+                        <div class="mb-3">
+                            <label>Estimated Delivery</label>
+                            <input type="text" name="estimated_delivery" class="form-control" placeholder="(e.g. 3 - 5 days)" required />
+                        </div>
 
                         <!-- Status -->
                         <div class="mb-3">
@@ -346,14 +381,12 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Add Product</button>
+                        <button type="submit" style="background-color:#FF7EBC; color: white; border: none;" class="btn btn-success">Add Product</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-
 
 
 
@@ -374,8 +407,8 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Add Category</button>
+                        <button type="button" style="border: none;" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" style="background-color:#FF7EBC; color: white; border: none;" class="btn btn-success">Add Category</button>
                     </div>
                 </form>
             </div>
@@ -406,8 +439,8 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" style="border: none;" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" style="background-color:#FF7EBC; color: white; border: none;"  class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -443,7 +476,12 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-                      
+    <script>
+        $('#addproduct').on('shown.bs.modal', function () {
+            $('#addProductForm')[0].reset(); 
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../javascript/admin-modals.js"></script>
     <script src="../javascript/admin-confirm.js"></script>

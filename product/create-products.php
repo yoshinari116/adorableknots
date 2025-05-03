@@ -7,7 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $category_id = $_POST['category_id'];
     $product_price = $_POST['product_price'];
     $product_status = $_POST['product_status'];
-    $product_customizations = $_POST['customizations'] ?? null;
+    $product_description = $_POST['product_description'] ?? null;
+    $estimated_delivery = $_POST['estimated_delivery'] ?? null;
 
     $target_dir = "../uploads/";
     $target_file = $target_dir . basename($_FILES["product_img"]["name"]);
@@ -25,13 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: ../admin/admin-page.php");
         exit();
     }
-    
 
     if (move_uploaded_file($_FILES["product_img"]["tmp_name"], $target_file)) {
         $product_img = basename($_FILES["product_img"]["name"]);
 
-        $sql = "INSERT INTO product_tbl (product_name, category_id, product_price, product_status, product_img, product_customizations)
-        VALUES (:product_name, :category_id, :product_price, :product_status, :product_img, :product_customizations)";
+        $sql = "INSERT INTO product_tbl (product_name, category_id, product_price, product_status, product_img, product_description, estimated_delivery)
+                VALUES (:product_name, :category_id, :product_price, :product_status, :product_img, :product_description, :estimated_delivery)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':product_name', $product_name);
@@ -39,8 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bindParam(':product_price', $product_price);
         $stmt->bindParam(':product_status', $product_status);
         $stmt->bindParam(':product_img', $product_img);
-        $stmt->bindParam(':product_customizations', $product_customizations);
-
+        $stmt->bindParam(':product_description', $product_description);
+        $stmt->bindParam(':estimated_delivery', $estimated_delivery);
 
         if ($stmt->execute()) {
             $_SESSION['success'] = "New product added successfully!";

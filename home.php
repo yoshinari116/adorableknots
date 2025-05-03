@@ -44,9 +44,10 @@
                 <img src="assets/icons/bag.png" alt="">
                 <a href="store-page.php">Shop Now</a>
             </button>
+
             <button> 
-                <img src="assets/icons/Chat.png" alt="">
-                <a href="#">Contact Us</a>
+                <img src="assets/icons/order.png" alt="">
+                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php'; ?>">My Orders</a>
             </button>
             <button> 
                 <img src="assets/icons/user.png" alt="">
@@ -54,8 +55,7 @@
             </button>
             <button>
                 <img src="assets/icons/cart.png" alt="Cart">
-                <a href="#">Cart ( 0 ) </a>
-                
+                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php'; ?>"> Cart ( 0 )</a>
             </button>
         </div>
         

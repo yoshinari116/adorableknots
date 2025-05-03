@@ -6,13 +6,15 @@ if (isset($_POST['update'])) {
     $name = htmlspecialchars($_POST['product_name']);
     $price = $_POST['product_price'];
     $status = $_POST['product_status'];
+    $description = $_POST['product_description'];
+    $estimated_delivery = $_POST['estimated_delivery'];
 
     $stmt = $conn->prepare("SELECT product_img FROM product_tbl WHERE product_id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $update_query = "UPDATE product_tbl SET product_name = :name, product_price = :price, product_status = :status";
+    $update_query = "UPDATE product_tbl SET product_name = :name, product_price = :price, product_status = :status, product_description = :description, estimated_delivery = :estimated_delivery";
 
     if (!empty($_FILES['product_img']['name'])) {
         $target_dir = "../uploads/";
@@ -38,7 +40,10 @@ if (isset($_POST['update'])) {
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':status', $status);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':estimated_delivery', $estimated_delivery);
     $stmt->bindParam(':id', $id);
+
     if (isset($img)) {
         $stmt->bindParam(':img', $img);
     }
