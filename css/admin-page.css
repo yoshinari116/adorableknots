@@ -189,8 +189,7 @@ body{
     margin-bottom: 5px;
 }
 
-.nav-button {   
-    border: 1px solid red;
+.nav-button {
     width: 250px;
     font-family: 'Dosis', sans-serif;
     font-size: 16px;
@@ -198,7 +197,7 @@ body{
     letter-spacing: 1px;
     text-align: left;
     color: #5E5166;
-    background: none;
+    background: none;    
     border: none;
     padding: 5px 5px;
     border-radius: 8px;
@@ -207,10 +206,6 @@ body{
 }
 
 .nav-button.active {
-    color: #FF7EBC;
-}
-
-.nav-button:hover:not(.active) {
     color: #FF7EBC;
 }
 
@@ -270,13 +265,12 @@ body{
 
 
 .products-container {
-    /* border: 1px solid red; */
     margin-left: 350px;
     max-width: calc(100vw - 360px);
     overflow-x: hidden;
     padding: 20px;
     min-height: 100vh;
-    box-sizing: border-box; /* Ensures padding is part of the width calculation */
+    box-sizing: border-box;
 }
 
 .products-container-header {

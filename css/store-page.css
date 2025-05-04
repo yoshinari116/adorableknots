@@ -4,7 +4,6 @@ body {
     margin: 0;
 }
 
-
 .category-sidebar {
     position: fixed;
     top: 90px; /* Height of navbar */
@@ -21,15 +20,14 @@ body {
     overflow-x: hidden;
 }
 
-.category-list {
+.category-list {    
     max-height: 400px; 
     overflow-y: auto;  
     overflow-x: hidden;
-    width: 230px;
-    padding: 0;
+    width: 250px;
     list-style-type: none;
+    padding-bottom: 50px;
 }
-
 
 .category-sidebar-header {
     font-family: 'Dosis', sans-serif;
@@ -42,7 +40,8 @@ body {
 }
 
 .nav-button {   
-    width: 230px;
+    border: 1px solid red;
+    width: 250px;
     font-family: 'Dosis', sans-serif;
     font-size: 16px;
     font-weight: 600;
@@ -51,7 +50,7 @@ body {
     color: #5E5166;
     background: none;
     border: none;
-    padding: 10px 5px;
+    padding: 5px 5px;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -93,7 +92,7 @@ body {
 
 .products-container {
     /* border: 1px solid red; */
-    margin-left: 400px;
+    margin-left: 350px;
     max-width: calc(100vw - 360px);
     overflow-x: hidden;
     padding: 20px;
@@ -196,15 +195,11 @@ body {
     width: 200px;
 }
 
-.status.available {
-    font-size: 14px;
-    color: green;
-}
-
-.not-available .badge {
+.status.not-available {
     font-size: 14px;
     color: red;
 }
+
 .modal {
     position: fixed;
     z-index: 9999;
@@ -322,14 +317,14 @@ body {
 }
 
 #addToCartBtn {
-    padding: 4px 15px;
+    padding: 10px 15px;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 400;
 }
 
 #checkoutBtn {
-    padding: 4px 15px;
+    padding: 10px 15px;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 400;

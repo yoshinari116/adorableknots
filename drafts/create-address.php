@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start();
 include '../database/db.php';
 
@@ -18,14 +18,14 @@ $street = trim($_POST['street']);
 $is_default = isset($_POST['is_default']) ? 1 : 0;
 
 try {
-    // If new address is set as default, unset previous default
+   
     if ($is_default) {
         $stmt = $conn->prepare("UPDATE address_tbl SET IsDefault = 0 WHERE Users_ID = :user_id");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
     }
 
-    // Insert the new address
+
     $stmt = $conn->prepare("INSERT INTO address_tbl (Users_ID, Region, Province, City, Barangay, Postal_Code, Street_Details, IsDefault) 
                             VALUES (:user_id, :region, :province, :city, :barangay, :postal_code, :street, :is_default)");
     $stmt->bindParam(':user_id', $user_id);
@@ -43,4 +43,4 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
-?>
+?> -->

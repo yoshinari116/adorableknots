@@ -14,6 +14,7 @@ if (isset($_SESSION['user'])) {
     exit;
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -45,25 +46,11 @@ if (isset($_SESSION['user'])) {
         </div>
 
         <div class="nav-links">
-            <button>
-                <img src="assets/icons/home.png">
-                <a href="home.php">Home</a>
-            </button>
-            <button>
-                <img src="assets/icons/bag.png">
-                <a href="store-page.php">Shop Now</a>
-            </button>
-            <button>
-                <img src="assets/icons/order.png" alt="">
-                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php'; ?>">My Orders</a>
-            <button class="active">
-                <img src="assets/icons/user.png">
-                <a href="account-page.php">Account</a>
-            </button>
-            <button>
-                <img src="assets/icons/cart.png" alt="Cart">
-                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php'; ?>"> Cart ( 0 )</a>
-            </button>
+            <button><img src="assets/icons/home.png"><a href="home.php">Home</a></button>
+            <button><img src="assets/icons/bag.png"><a href="store-page.php">Shop Now</a></button>
+            <button><img src="assets/icons/order.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php' ?>">My Orders</a></button>
+            <button class="active"><img src="assets/icons/user.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php' ?>">Account</a></button>
+            <button><img src="assets/icons/cart.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php' ?>">Cart</a></button>
         </div>
     </nav>
 
@@ -81,8 +68,7 @@ if (isset($_SESSION['user'])) {
                 </div>
                 <button class="nav-button active" onclick="location.href='account-page.php'">Profile</button>
                 <button class="nav-button" onclick="location.href='address-page.php'">Address</button>
-                <button class="nav-button" onclick="location.href='#'">Change Password</button>
-                <button class="nav-button" onclick="location.href='#'">My Purchases</button>
+                <button class="nav-button" onclick="location.href='change-password.page.php'">Change Password</button>
             </div>
 
             <form class="account-container-form" action="update-account.php" method="post" id="accountForm" enctype="multipart/form-data">

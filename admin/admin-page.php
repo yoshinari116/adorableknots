@@ -2,7 +2,6 @@
 session_start();
 require_once '../database/db.php';
 
-// Fetch categories from the database
 $sql_categories = "SELECT * FROM category_tbl ORDER BY category_name ASC";
 $stmt_categories = $conn->prepare($sql_categories);
 
@@ -13,7 +12,7 @@ if ($stmt_categories->execute()) {
     echo "Error fetching categories: " . $stmt_categories->errorInfo()[2];
 }
 
-// Ensure 'Others' category is included
+// Check if 'Others' category exists and if not, add it with a new category_id
 $others_exists = false;
 foreach ($categories as $category) {
     if ($category['category_name'] === 'Others') {
@@ -23,58 +22,76 @@ foreach ($categories as $category) {
 }
 
 if (!$others_exists) {
-    $categories[] = ['category_name' => 'Others', 'category_id' => '14'];
+    // Generate the category_id for "Others"
+    $category_name = 'Others';
+    $minute = date('i');  // Current minute
+    $second = date('s');  // Current second
+    $first_letter = strtoupper(substr($category_name, 0, 1)); // First letter of 'Others'
+
+    // Create category_id: CT + minute + second + first letter of category name
+    $category_id = 'CT' . $minute . $second . $first_letter;
+
+    // Insert the "Others" category with the generated category_id
+    $stmt_insert = $conn->prepare("INSERT INTO category_tbl (category_id, category_name) VALUES (:category_id, :category_name)");
+    $stmt_insert->bindParam(':category_id', $category_id, PDO::PARAM_STR);
+    $stmt_insert->bindParam(':category_name', $category_name, PDO::PARAM_STR);
+    
+    if ($stmt_insert->execute()) {
+        // Successfully added the 'Others' category
+        $_SESSION['success'] = "'Others' category added successfully with ID $category_id.";
+    } else {
+        // Error adding the 'Others' category
+        $_SESSION['error'] = "Error adding 'Others' category.";
+    }
 }
 
-// Sort categories alphabetically, ensuring 'Others' is last
+// Sorting categories: push 'Others' to the last
 usort($categories, function($a, $b) {
     if ($a['category_name'] === 'Others') return 1;
     if ($b['category_name'] === 'Others') return -1;
     return strcmp($a['category_name'], $b['category_name']);
 });
 
-// Get filters
-$category_filter = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
-$status_filter = isset($_GET['status']) ? htmlspecialchars($_GET['status']) : null;
-
-// Validate product status
+// Handle filters
+$category_filter = isset($_GET['category_id']) ? $_GET['category_id'] : null;
 $valid_statuses = ['Available', 'Not Available'];
-if ($status_filter && !in_array($status_filter, $valid_statuses)) {
+$status_filter = $_GET['status'] ?? 'Available';  // Default to 'Available'
+
+if (!in_array($status_filter, $valid_statuses)) {
     $status_filter = null;
 }
 
-// Build SQL query
+// Build product query
 $sql_products = "SELECT p.*, c.category_name 
                  FROM product_tbl p 
                  LEFT JOIN category_tbl c ON p.category_id = c.category_id";
 
 $where_conditions = [];
+$params = [];
 
 if ($category_filter) {
     $where_conditions[] = "p.category_id = :category_id";
+    $params[':category_id'] = $category_filter;
 }
 
 if ($status_filter) {
     $where_conditions[] = "p.product_status = :product_status";
+    $params[':product_status'] = $status_filter;
 }
 
-if (count($where_conditions) > 0) {
+if ($where_conditions) {
     $sql_products .= " WHERE " . implode(" AND ", $where_conditions);
 }
 
 $stmt_products = $conn->prepare($sql_products);
-
-if ($category_filter) {
-    $stmt_products->bindParam(':category_id', $category_filter, PDO::PARAM_INT);
-}
-
-if ($status_filter) {
-    $stmt_products->bindParam(':product_status', $status_filter, PDO::PARAM_STR);
+foreach ($params as $param => $value) {
+    $stmt_products->bindValue($param, $value);
 }
 
 $stmt_products->execute();
 $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -106,8 +123,8 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="nav-links">
-                <button class="active"><a href="admin-page.php">Products</a></button>
-                <button><a href="store-page.php">Orders</a></button>
+                <button class="active"><a href="admin/admin-page.php">Products</a></button>
+                <button><a href="admin-orders-page.php">Orders</a></button>
                 <button><a href="#">Analytics</a></button>
             </div>
 
@@ -146,24 +163,32 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="category-sidebar-header">FILTER PRODUCTS BY STATUS</div>
             <div class="filter-status-buttons">
-                <?php $category_query = isset($_GET['category_id']) ? '&category_id=' . urlencode($_GET['category_id']) : ''; ?>
                 <?php
-                $all_status_href = 'admin-page.php';
-                if (isset($_GET['category_id'])) {
-                    $all_status_href .= '?category_id=' . urlencode($_GET['category_id']);
-                }
+                $category_query = isset($_GET['category_id']) ? '&category_id=' . urlencode($_GET['category_id']) : '';
+                $status = $_GET['status'] ?? 'Available'; // Default to 'Available'
+
+                // Page name (adjust if using this in admin page)
+                $page = basename($_SERVER['PHP_SELF']);
                 ?>
-                <button class="nav-button <?= !isset($_GET['status']) ? 'active' : '' ?>" onclick="location.href='<?= $all_status_href ?>'">All Status</button>
 
-                <button class="nav-button <?= (isset($_GET['status']) && $_GET['status'] === 'Available') ? 'active' : '' ?>" onclick="location.href='admin-page.php?status=Available<?= $category_query ?>'">
-                Available
+                <!-- All Status button -->
+                <button class="nav-button <?= $status === 'All' ? 'active' : '' ?>" onclick="location.href='<?= $page ?>?status=All<?= $category_query ?>'">
+                    All Status
                 </button>
 
-                <button class="nav-button <?= (isset($_GET['status']) && $_GET['status'] === 'Not Available') ? 'active' : '' ?>" onclick="location.href='admin-page.php?status=Not Available<?= $category_query ?>'">
-                Not Available
+                <!-- Available button -->
+                <button class="nav-button <?= $status === 'Available' ? 'active' : '' ?>" onclick="location.href='<?= $page ?>?status=Available<?= $category_query ?>'">
+                    Available
                 </button>
 
+                <!-- Not Available button -->
+                <button class="nav-button <?= $status === 'Not Available' ? 'active' : '' ?>" onclick="location.href='<?= $page ?>?status=Not%20Available<?= $category_query ?>'">
+                    Not Available
+                </button>
             </div>
+
+
+
 
             <div class="category-sidebar-header">MANAGE CATEGORIES</div>
             <div class="manage-category-buttons">
@@ -270,7 +295,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" style="border: none;" class="btn btn-secondary" onclick="confirmDelete(<?= $row['product_id'] ?>)">Remove Product</button>
+                                    <button type="button" style="border: none;" class="btn btn-secondary" onclick="confirmDelete('<?= $row['product_id'] ?>')">Remove Product</button>
                                     <button type="submit" name="update" style="background-color:#FF7EBC; color: white; border: none;" class="btn btn-primary">Save changes</button>
                                 </div>
                             </form>
@@ -477,10 +502,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script>
-        $('#addproduct').on('shown.bs.modal', function () {
-            $('#addProductForm')[0].reset(); 
-        });
-    </script>
+    $('#addproduct').on('shown.bs.modal', function () {
+        $('#addProductForm')[0].reset();
+    });
+
+    function confirmDelete(productId) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            // Redirect to delete-product.php with the product_id
+            window.location.href = '../product/delete-product.php?id=' + productId;
+        }
+    }
+</script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../javascript/admin-modals.js"></script>

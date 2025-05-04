@@ -36,10 +36,12 @@ usort($categories, function ($a, $b) {
 
 // Handle filters
 $category_filter = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
-$status_filter = isset($_GET['status']) ? htmlspecialchars($_GET['status']) : null;
-$valid_statuses = ['Available', 'Not Available'];
-if ($status_filter && !in_array($status_filter, $valid_statuses)) {
-    $status_filter = null;
+$status_filter = $_GET['status'] ?? 'Available'; // Default to 'Available'
+
+// Normalize and validate status
+$valid_statuses = ['Available', 'Not Available', 'All'];
+if (!in_array($status_filter, $valid_statuses)) {
+    $status_filter = 'Available'; // fallback if invalid
 }
 
 // Build dynamic product query
@@ -48,12 +50,17 @@ $sql_products = "SELECT p.*, c.category_name
                  LEFT JOIN category_tbl c ON p.category_id = c.category_id";
 
 $where_conditions = [];
+$params = [];
 
 if ($category_filter) {
     $where_conditions[] = "p.category_id = :category_id";
+    $params[':category_id'] = $category_filter;
 }
-if ($status_filter) {
+
+// Only apply product_status filter if it's not 'All'
+if ($status_filter !== 'All') {
     $where_conditions[] = "p.product_status = :product_status";
+    $params[':product_status'] = $status_filter;
 }
 
 if ($where_conditions) {
@@ -61,17 +68,14 @@ if ($where_conditions) {
 }
 
 $stmt_products = $conn->prepare($sql_products);
-
-if ($category_filter) {
-    $stmt_products->bindParam(':category_id', $category_filter, PDO::PARAM_INT);
-}
-if ($status_filter) {
-    $stmt_products->bindParam(':product_status', $status_filter, PDO::PARAM_STR);
+foreach ($params as $param => $value) {
+    $stmt_products->bindValue($param, $value);
 }
 
 $stmt_products->execute();
 $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -81,14 +85,15 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
     <title>Adorable Knots</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Caveat&family=Dosis&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Dosis:wght@200..800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/store-page.css">
 </head>
@@ -104,7 +109,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             <button class="active"><img src="assets/icons/bag.png"><a href="store-page.php">Shop Now</a></button>
             <button><img src="assets/icons/order.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php' ?>">My Orders</a></button>
             <button><img src="assets/icons/user.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php' ?>">Account</a></button>
-            <button><img src="assets/icons/cart.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php' ?>">Cart ( 0 )</a></button>
+            <button><img src="assets/icons/cart.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php' ?>">Cart</a></button>
         </div>
 
     </nav>
@@ -115,7 +120,8 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             <div class="category-sidebar-header">CATEGORIES</div>
             <div class="category-list">
                 <?php
-                $status_query = isset($_GET['status']) ? '?status=' . urlencode($_GET['status']) : '';
+                $status = $_GET['status'] ?? 'Available'; // Default to 'Available' if not set
+                $status_query = '?status=' . urlencode($status);
                 ?>
                 <button class="nav-button <?= !isset($_GET['category_id']) ? 'active' : '' ?>" onclick="location.href='store-page.php<?= $status_query ?>'">All Products</button>
                 <?php foreach ($categories as $category): ?>
@@ -128,13 +134,30 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             <div class="category-sidebar-header">FILTER PRODUCTS BY STATUS</div>
             <div class="filter-status-buttons">
                 <?php
+                // Get current filters
                 $category_query = isset($_GET['category_id']) ? '&category_id=' . urlencode($_GET['category_id']) : '';
-                $all_status_href = 'store-page.php' . (isset($_GET['category_id']) ? '?category_id=' . urlencode($_GET['category_id']) : '');
+                $status = $_GET['status'] ?? 'Available'; // Default to 'Available'
                 ?>
-                <button class="nav-button <?= !isset($_GET['status']) ? 'active' : '' ?>" onclick="location.href='<?= $all_status_href ?>'">All Status</button>
-                <button class="nav-button <?= ($_GET['status'] ?? '') === 'Available' ? 'active' : '' ?>" onclick="location.href='store-page.php?status=Available<?= $category_query ?>'">Available</button>
-                <button class="nav-button <?= ($_GET['status'] ?? '') === 'Not Available' ? 'active' : '' ?>" onclick="location.href='store-page.php?status=Not Available<?= $category_query ?>'">Not Available</button>
+
+                <!-- All Status button -->
+                <button class="nav-button <?= $status === 'All' ? 'active' : '' ?>" onclick="location.href='store-page.php?status=All<?= $category_query ?>'">
+                    All Status
+                </button>
+
+                <!-- Available button -->
+                <button class="nav-button <?= $status === 'Available' ? 'active' : '' ?>" onclick="location.href='store-page.php?status=Available<?= $category_query ?>'">
+                    Available
+                </button>
+
+                <!-- Not Available button -->
+                <button class="nav-button <?= $status === 'Not Available' ? 'active' : '' ?>" onclick="location.href='store-page.php?status=Not Available<?= $category_query ?>'">
+                    Not Available
+                </button>
             </div>
+
+        </div>
+
+
         </div>
 
         <!-- Product Grid -->
@@ -157,8 +180,11 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="product-description"><?= nl2br(htmlspecialchars($product['product_description'])) ?></div>
                                 <div class="estimated-delivery">Estimated Delivery: <?= htmlspecialchars($product['estimated_delivery']) ?></div>
                                 <?php if ($product['product_status'] === 'Not Available'): ?>
-                                    <div class="status not-available"><span class="badge">Not Available</span></div>
+                                    <div class="status not-available">
+                                        <?= htmlspecialchars($product['product_status']) ?>
+                                    </div>
                                 <?php endif; ?>
+
                             </div>
                         </div>
 
@@ -250,7 +276,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                 input.type = 'hidden';
                 input.name = 'id';
                 input.value = selectedProduct.id;
-
+                
                 form.appendChild(input);
                 document.body.appendChild(form);
                 form.submit();

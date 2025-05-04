@@ -2,202 +2,133 @@
 session_start();
 require_once 'database/db.php';
 
-// Add to cart logic
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['remove_id'])) {
-        $removeId = $_POST['remove_id'];
-        unset($_SESSION['cart'][$removeId]);
-        header("Location: cart-page.php");
-        exit;
-    }
-
-    if (isset($_POST['checkout'])) {
-        header("Location: checkout-page.php");
-        exit;
-    }
-
-    $productId = $_POST['product_id'] ?? null;
-    $quantity = (int) ($_POST['quantity'] ?? 1);
-
-    if ($productId) {
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-
-        if (isset($_SESSION['cart'][$productId])) {
-            $_SESSION['cart'][$productId] += $quantity;
-        } else {
-            $_SESSION['cart'][$productId] = $quantity;
-        }
-
-        header("Location: cart-page.php");
-        exit;
-    }
+if (!isset($_SESSION['user'])) {
+    header('Location: signup-page.php');
+    exit;
 }
+
+$userId = $_SESSION['user']['user_id'];
+
+
+// Remove from cart
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_cart_id'])) {
+    $removeStmt = $conn->prepare("DELETE FROM cart_tbl WHERE cart_id = ? AND user_id = ?");
+    $removeStmt->execute([$_POST['remove_cart_id'], $userId]);
+    header("Location: cart-page.php");
+    exit;
+}
+
+// Add to cart (in case it's reused from store)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
+    $productId = $_POST['product_id'];
+    $cart_id = 'CRT' . date('ymd') . date('s') . mt_rand(1000, 9999);
+
+    $insertStmt = $conn->prepare("INSERT INTO cart_tbl (cart_id, user_id, product_id) VALUES (?, ?, ?)");
+    $insertStmt->execute([$cart_id, $userId, $productId]);
+
+    header("Location: cart-page.php");
+    exit;
+}
+
+// Fetch cart items
+$stmt = $conn->prepare("
+    SELECT p.*, c.cart_id, c.added_at
+    FROM cart_tbl c
+    JOIN product_tbl p ON c.product_id = p.product_id
+    WHERE c.user_id = ?
+");
+$stmt->execute([$userId]);
+$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Cart</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 20px;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
 
-        .cart-container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Caveat:wght@400..700&family=Dosis:wght@200..800&display=swap" rel="stylesheet">
 
-        .back-home {
-            display: inline-block;
-            margin-bottom: 20px;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: background 0.3s ease;
-        }
-
-        .back-home:hover {
-            background-color: #0056b3;
-        }
-
-        .cart-item {
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
-        .item-info {
-            flex: 1;
-        }
-
-        .item-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #444;
-        }
-
-        .item-quantity,
-        .item-price,
-        .item-subtotal {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .remove-button {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .remove-button:hover {
-            background-color: #e60000;
-        }
-
-        .checkout-btn {
-            display: block;
-            width: 100%;
-            background-color: #28a745;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        .checkout-btn:hover {
-            background-color: #218838;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 50px;
-            color: #999;
-        }
-    </style>
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/cart-page.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div class="cart-container">
-        <h1>Your Shopping Cart</h1>
+    <nav class="custom-navbar">
+        <div class="logo">
+            <img src="assets/web_img/ak-logo.png?v2" alt="Adorable Knots Logo">
+        </div>
+        <div class="nav-links">
+            <button><img src="assets/icons/home.png"><a href="home.php">Home</a></button>
+            <button><img src="assets/icons/bag.png"><a href="store-page.php">Shop Now</a></button>
+            <button><img src="assets/icons/order.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php' ?>">My Orders</a></button>
+            <button><img src="assets/icons/user.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php' ?>">Account</a></button>
+            <button class="active"><img src="assets/icons/cart.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php' ?>">Cart</a></button>
+        </div>
+    </nav>
 
-        <a href="store-page.php" class="back-home">← Back to Home</a>
+    <div class="content-scroll">
+        <div class="container my-5">
+            <div class="orders-header mb-4">My Cart</div>
 
-        <?php if (empty($_SESSION['cart'])): ?>
-            <div class="empty-cart">Your cart is empty.</div>
-        <?php else: ?>
-            <form method="post">
-                <?php
-                $total = 0;
-                foreach ($_SESSION['cart'] as $id => $qty):
-                    $stmt = $conn->prepare("SELECT product_name, product_price FROM product_tbl WHERE product_id = ?");
-                    $stmt->execute([$id]);
-                    $product = $stmt->fetch();
-
-                    if ($product):
-                        $name = htmlspecialchars($product['product_name']);
-                        $price = $product['product_price'];
-                        $subtotal = $qty * $price;
-                        $total += $subtotal;
-                ?>
-                    <div class="cart-item">
-                        <div class="item-info">
-                            <div class="item-name"><?= $name ?></div>
-                            <div class="item-quantity">Quantity: <?= $qty ?></div>
-                            <div class="item-price">Price: ₱<?= number_format($price, 2) ?></div>
-                            <div class="item-subtotal">Subtotal: ₱<?= number_format($subtotal, 2) ?></div>
+            <?php if (count($cartItems) > 0): ?>
+                <?php foreach ($cartItems as $item): ?>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <strong>Added At:</strong> <?= htmlspecialchars($item['added_at']) ?>
                         </div>
-                        <div>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="remove_id" value="<?= $id ?>">
-                                <button type="submit" class="remove-button">Remove</button>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Image</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><?= htmlspecialchars($item['product_name']) ?></td>
+                                        <td><img src="uploads/<?= htmlspecialchars($item['product_img']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" width="50"></td>
+                                        <td><?= nl2br(htmlspecialchars($item['product_description'])) ?></td>
+                                        <td>₱<?= number_format($item['product_price'], 2) ?></td>
+                                        <td><?= htmlspecialchars($item['product_status']) ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <form action="checkout-page.php?from=cart" method="POST" class="d-flex gap-2 align-items-center mb-2">
+                                <input type="hidden" name="product_ids[]" value="<?= $item['product_id'] ?>">
+                                <button type="submit" class="btn btn-primary">Checkout</button>
+                            </form>
+
+                            <form method="post" class="me-2">
+                                <input type="hidden" name="remove_cart_id" value="<?= htmlspecialchars($item['cart_id']) ?>">
+                                <button type="submit" class="btn btn-secondary" style="border: none;">Remove</button>
                             </form>
                         </div>
                     </div>
-                <?php else: ?>
-                    <div class="cart-item">
-                        <div class="item-info">Unknown Product (ID: <?= $id ?>) — Quantity: <?= $qty ?></div>
-                    </div>
-                <?php endif; endforeach; ?>
-            </form>
+                <?php endforeach; ?>
 
-            <div style="text-align:right; margin-top:20px; font-size:18px; font-weight:bold;">
-                Total: ₱<?= number_format($total, 2) ?>
-            </div>
 
-            <form method="post" action="checkout-page.php?from=cart">
-                <button type="submit" name="checkout" class="checkout-btn">Proceed to Checkout</button>
-            </form>
-
-        <?php endif; ?>
+            <?php else: ?>
+                <p class="no-cart">Your cart is empty.</p>
+            <?php endif; ?>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="javascript/navbar-icons.js"></script>
 </body>
 </html>

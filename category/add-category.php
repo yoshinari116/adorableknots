@@ -12,14 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category_exists = $stmt->fetchColumn() > 0;
 
     if ($category_exists) {
-        // If category exists, show error message
         $_SESSION['error'] = 'Invalid: Category name already exists.';
-        header('Location: ../admin/admin-page.php'); // Redirect to the page where the modal is
+        header('Location: ../admin/admin-page.php'); 
         exit();
     }
 
-    // Proceed to add the category if it doesn't exist
-    $stmt = $conn->prepare("INSERT INTO category_tbl (category_name) VALUES (:category_name)");
+    $minute = date('i'); 
+    $second = date('s'); 
+    $first_letter = strtoupper(substr($category_name, 0, 1)); 
+
+    $category_id = 'CT' . $minute . $second . $first_letter;
+
+    $stmt = $conn->prepare("INSERT INTO category_tbl (category_id, category_name) VALUES (:category_id, :category_name)");
+    $stmt->bindParam(':category_id', $category_id, PDO::PARAM_STR);
     $stmt->bindParam(':category_name', $category_name, PDO::PARAM_STR);
 
     if ($stmt->execute()) {

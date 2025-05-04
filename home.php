@@ -24,59 +24,28 @@
 
 <body>
     <nav class="custom-navbar">
-        <!-- <div class="nav-container">
-            <div class="burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div> -->
+      
         <div class="logo">
             <img src="assets/web_img/ak-logo.png?v2" alt="Adorable Knots Logo">
         </div>
 
         <div class="nav-links">
-            <button class="active"> 
-                <img src="assets/icons/home.png" alt="">
-                <a href="home.php">Home</a>
-            </button>
-            <button> 
-                <img src="assets/icons/bag.png" alt="">
-                <a href="store-page.php">Shop Now</a>
-            </button>
-
-            <button> 
-                <img src="assets/icons/order.png" alt="">
-                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php'; ?>">My Orders</a>
-            </button>
-            <button> 
-                <img src="assets/icons/user.png" alt="">
-                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php'; ?>">Account</a>     
-            </button>
-            <button>
-                <img src="assets/icons/cart.png" alt="Cart">
-                <a href="<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php'; ?>"> Cart ( 0 )</a>
-            </button>
+            <button class="active"><img src="assets/icons/home.png"><a href="home.php">Home</a></button>
+            <button><img src="assets/icons/bag.png"><a href="store-page.php">Shop Now</a></button>
+            <button><img src="assets/icons/order.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'orders-page.php' : 'signup-page.php' ?>">My Orders</a></button>
+            <button><img src="assets/icons/user.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'account-page.php' : 'signup-page.php' ?>">Account</a></button>
+            <button><img src="assets/icons/cart.png"><a href="<?= isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'cart-page.php' : 'signup-page.php' ?>">Cart</a></button>
         </div>
         
       
-
     </nav>
-
-    <!-- <div class="dropdown-menu" id="dropdownMenu">
-        <a href="home.php">HOME</a>
-        <a href="#">SHOP</a>
-        <a href="#">CONTACT</a>
-        <a href="#">FOLLOW US</a>
-    </div> -->
 
     <section class="banner-section">
         <div class="banner-bg"></div>
         <div class="banner-content">SOFTLY CRAFTED
             <div class="banner-sub-text">CRAFTED BY HAND, TREASURED WITH LOVE.</div>
             <button>
-                View Our Store
-                <!-- <img src="assets/web_img/next-circle.png" alt=""> -->
+                <a href="store-page.php">Visit Our Store</a>
             </button>
         </div>
     </section>
@@ -101,7 +70,9 @@
                 <div class="collection-title">Crochet Creations</div>
                 <div class="collection-line"></div>
             </div>
-            <button>Show All Products</button>
+            <button>
+                <a href="store-page.php">Show All Products</a>
+            </button>
         </div>
         <div class="collection-container">
             <div class="collection-highlight-container">
@@ -165,7 +136,9 @@
                 <div class="collection-title">Stiched Styles</div>
                 <div class="collection-line"></div>
             </div>
-            <button>Show All Products</button>
+            <button>
+              <a href="store-page.php">Show All Products</a>
+            </button>
         </div>
         <div class="collection-container">
              <div class="collection-highlight-container">

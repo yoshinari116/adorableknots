@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $barangay = htmlspecialchars($_POST['barangay'] ?? '');
     $postal_code = htmlspecialchars($_POST['postal_code'] ?? '');
     $street_details = htmlspecialchars($_POST['street_details'] ?? '');
-    $isDefault = isset($_POST['is_default']) ? 1 : 0;
 
     if (
         empty($phone) || empty($region) || empty($province) || empty($city) ||
@@ -29,20 +28,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Generate address_id in the format AD + YY + MM + random digits
+    $address_id = 'AD' . date('y') . date('m') . rand(100, 999); // Format: ADYYMM + random 3 digits
+
     try {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec("SET NAMES 'utf8mb4'");
 
-        if ($isDefault == 1) {
-            $resetDefault = $conn->prepare("UPDATE address_tbl SET IsDefault = 0 WHERE user_id = :user_id");
-            $resetDefault->execute(['user_id' => $user_id]);
-        }
+        // Set previous default address to non-default
+        $resetDefault = $conn->prepare("UPDATE address_tbl SET IsDefault = 0 WHERE user_id = :user_id");
+        $resetDefault->execute(['user_id' => $user_id]);
 
+        // Set the new address as default (IsDefault = 1)
+        $isDefault = 1;
+
+        // Insert new address
         $stmt = $conn->prepare("INSERT INTO address_tbl 
-            (user_id, phone, region, province, city, barangay, postal_code, street_details, IsDefault) 
+            (address_id, user_id, phone, region, province, city, barangay, postal_code, street_details, IsDefault) 
             VALUES 
-            (:user_id, :phone, :region, :province, :city, :barangay, :postal_code, :street_details, :isDefault)");
+            (:address_id, :user_id, :phone, :region, :province, :city, :barangay, :postal_code, :street_details, :isDefault)");
 
+        $stmt->bindParam(':address_id', $address_id); // Bind address_id
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':region', $region);

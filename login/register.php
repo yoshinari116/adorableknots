@@ -55,15 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    // Hash the password
+    // Generate user_id in the format UID + YY + MM + Seconds + Random digits
+    $uid = 'UID'; // Static part of the UID
+    $timestamp = date('y') . date('m') . date('s'); // Format: YYMMSeconds
+    $random_digits = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT); // Generate 4 random digits (e.g., 0234)
+    $user_id = $uid . $timestamp . $random_digits;
+
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-    // Set the user_type to "user" by default
     $user_type = 'user';
 
-    // Insert user into database with user_type as "user"
-    $stmt = $conn->prepare("INSERT INTO users_tbl (username, email, fullname, password, user_type) VALUES (:username, :email, :fullname, :password, :user_type)");
+    // Insert into the database
+    $stmt = $conn->prepare("INSERT INTO users_tbl (user_id, username, email, fullname, password, user_type) VALUES (:user_id, :username, :email, :fullname, :password, :user_type)");
     $stmt->execute([
+        'user_id' => $user_id,
         'username' => $username,
         'email' => $email,
         'fullname' => $first_name . ' ' . $last_name, // Combine first and last name

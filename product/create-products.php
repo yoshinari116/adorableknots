@@ -10,6 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $product_description = $_POST['product_description'] ?? null;
     $estimated_delivery = $_POST['estimated_delivery'] ?? null;
 
+    // Generate product_id in the format "PDT" + yymmddHis (total 15 characters)
+    $product_id = "PDT" . date("ymdHis");
+
     $target_dir = "../uploads/";
     $target_file = $target_dir . basename($_FILES["product_img"]["name"]);
     $image_file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -30,10 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (move_uploaded_file($_FILES["product_img"]["tmp_name"], $target_file)) {
         $product_img = basename($_FILES["product_img"]["name"]);
 
-        $sql = "INSERT INTO product_tbl (product_name, category_id, product_price, product_status, product_img, product_description, estimated_delivery)
-                VALUES (:product_name, :category_id, :product_price, :product_status, :product_img, :product_description, :estimated_delivery)";
+        $sql = "INSERT INTO product_tbl (product_id, product_name, category_id, product_price, product_status, product_img, product_description, estimated_delivery)
+                VALUES (:product_id, :product_name, :category_id, :product_price, :product_status, :product_img, :product_description, :estimated_delivery)";
 
         $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':product_id', $product_id);
         $stmt->bindParam(':product_name', $product_name);
         $stmt->bindParam(':category_id', $category_id);
         $stmt->bindParam(':product_price', $product_price);
