@@ -2,9 +2,7 @@
 session_start();
 require_once 'database/db.php';
 
-$cart_items = $_SESSION['cart'] ?? [];
 $user_id = $_SESSION['user']['user_id'] ?? null;
-$addresses = [];
 
 if (!$user_id) {
     echo "User not logged in.";
@@ -18,13 +16,44 @@ $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $addresses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch cart items for the logged-in user
-$stmt = $conn->prepare("SELECT p.product_id, p.product_name, p.product_price, p.product_img, p.product_description, p.estimated_delivery, c.quantity, c.customization, c.cart_id FROM cart_tbl c JOIN product_tbl p ON c.product_id = p.product_id WHERE c.user_id = ?");
-$stmt->execute([$user_id]);
-$cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Determine if this is a single item or multiple items checkout
+$products = [];
 
-$_SESSION['cart'] = $cartItems;
-$products = $cartItems;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['product_id']) && isset($_POST['cart_id'])) {
+        // Single item checkout
+        $product_id = $_POST['product_id'];
+        $cart_id = $_POST['cart_id'];
+
+        $stmt = $conn->prepare("
+            SELECT p.product_id, p.product_name, p.product_price, p.product_img, p.product_description, p.estimated_delivery, c.quantity, c.customization, c.cart_id
+            FROM cart_tbl c
+            JOIN product_tbl p ON c.product_id = p.product_id
+            WHERE c.user_id = ? AND c.cart_id = ? AND p.product_id = ?
+        ");
+        $stmt->execute([$user_id, $cart_id, $product_id]);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } elseif (isset($_POST['product_ids'])) {
+        // Checkout all selected products
+        $productIds = explode(',', $_POST['product_ids']);
+        $placeholders = implode(',', array_fill(0, count($productIds), '?'));
+
+        // Prepare SQL with dynamic placeholders
+        $sql = "
+            SELECT p.product_id, p.product_name, p.product_price, p.product_img, p.product_description, p.estimated_delivery, c.quantity, c.customization, c.cart_id
+            FROM cart_tbl c
+            JOIN product_tbl p ON c.product_id = p.product_id
+            WHERE c.user_id = ? AND p.product_id IN ($placeholders)
+        ";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(array_merge([$user_id], $productIds));
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+$_SESSION['cart'] = $products;
 ?>
 
 <!DOCTYPE html>
@@ -45,10 +74,10 @@ $products = $cartItems;
     </div>
     <div class="nav-links">
       <button><a href="home.php">Home</a></button>
-      <button class="active"><a href="store-page.php">Shop Now</a></button>
+      <button ><a href="store-page.php">Shop Now</a></button>
       <button><a href="orders-page.php">My Orders</a></button>
       <button><a href="account-page.php">Account</a></button>
-      <button><a href="cart-page.php">Cart</a></button>
+      <button class="active"><a href="cart-page.php">Cart</a></button>
     </div>
   </nav>
 
@@ -78,10 +107,13 @@ $products = $cartItems;
             </div>
           </div>
 
-          <input type="hidden" name="products[<?= $product['product_id'] ?>][product_id]" value="<?= htmlspecialchars($product['product_id']) ?>">
-          <input type="hidden" name="products[<?= $product['product_id'] ?>][product_price]" value="<?= htmlspecialchars($product['product_price']) ?>">
+          <input type="hidden" name="products[<?= $product['product_id'] ?>][product_id]" value="<?= $product['product_id'] ?>">
+          <input type="hidden" name="products[<?= $product['product_id'] ?>][cart_id]" value="<?= $product['cart_id'] ?>">
+          <input type="hidden" name="products[<?= $product['product_id'] ?>][product_price]" value="<?= $product['product_price'] ?>">
+
         </div>
       <?php endforeach; ?>
+
 
       <div class="product-checkout-inputs">
         <?php if (!empty($addresses)): ?>

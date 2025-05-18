@@ -78,7 +78,7 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="content-scroll">
         <div class="container my-5">
             <div class="orders-header mb-4">My Cart</div>
-
+    
             <?php if (count($cartItems) > 0): ?>
                 <?php foreach ($cartItems as $item): ?>
                     <div class="card mb-4">
@@ -107,25 +107,33 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tbody>
                             </table>
 
+                            <!-- Checkout button for this item -->
                             <form action="cart-checkout-page.php" method="POST" class="d-flex gap-2 align-items-center mb-2">
-                                <!-- Send all product IDs as a comma-separated string in one hidden field -->
-                                <input type="hidden" name="product_ids" value="<?= implode(',', array_column($cartItems, 'product_id')) ?>">
-                                <button type="submit" class="btn btn-primary">Checkout All</button>
+                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
+                                <input type="hidden" name="cart_id" value="<?= htmlspecialchars($item['cart_id']) ?>">
+                                <button type="submit" class="btn btn-secondary" style="background-color: #FF7EBC; color: white; border:none;">Checkout</button>
                             </form>
 
-
+                            <!-- Remove button -->
                             <form method="post" class="me-2">
                                 <input type="hidden" name="remove_cart_id" value="<?= htmlspecialchars($item['cart_id']) ?>">
-                                <button type="submit" class="btn btn-secondary" style="border: none;">Remove</button>
+                                <button type="submit" class="btn btn-secondary">Remove</button>
                             </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
 
-
+                <!-- Checkout All button (outside the cards) -->
+                <div class="text-end mt-4">
+                    <form action="cart-checkout-page-bulk.php" method="POST">
+                        <input type="hidden" name="product_ids" value="<?= implode(',', array_column($cartItems, 'product_id')) ?>">
+                        <button type="submit" class="btn btn-secondary btn-lg" style="background-color: transparent; color: white; border: 2px solid white;">Checkout All Items</button>
+                    </form>
+                </div>
             <?php else: ?>
                 <p class="no-cart">Your cart is empty.</p>
             <?php endif; ?>
+
         </div>
     </div>
 

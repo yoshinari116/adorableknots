@@ -69,13 +69,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p><strong>Total Price:</strong> ₱<?= number_format($order['total_price'], 2) ?></p>
 
                             <?php
-                            // Fetch items for this order
+                            // Fetch items for this specific order
                             $item_sql = "SELECT oi.*, p.product_name, p.product_img
-                                        FROM order_items_tbl oi
-                                        JOIN product_tbl p ON oi.product_id = p.product_id
-                                        WHERE oi.order_id = :order_id";
+                                         FROM order_items_tbl oi
+                                         JOIN product_tbl p ON oi.product_id = p.product_id
+                                         WHERE oi.order_id = :order_id";
                             $item_stmt = $conn->prepare($item_sql);
-                            $item_stmt->bindParam(':order_id', $order['order_id'], PDO::PARAM_INT);
+                            $item_stmt->bindParam(':order_id', $order['order_id'], PDO::PARAM_STR);
                             $item_stmt->execute();
                             $items = $item_stmt->fetchAll(PDO::FETCH_ASSOC);
                             ?>
@@ -115,9 +115,9 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JS -->
-<script src="javascript/navbar-icons.js"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="javascript/navbar-icons.js"></script>
 </body>
 </html>

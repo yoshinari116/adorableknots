@@ -1,0 +1,132 @@
+body {
+
+    padding-top: 90px; 
+    background: linear-gradient(to bottom, #FF7EBC 0%, #FFB5DA 50%, #FF7EBC 100%);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.product-container {
+    height: 850px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.product-box {
+    height: 600px;
+    width: 800px;
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;   
+    box-shadow: 0px 1px 4px 2px rgba(0, 0, 0, 0.189);  
+    box-sizing: border-box;
+}
+
+.products-list-container {
+    width:  60%;
+    max-height: 500px;      
+    overflow-y: auto;       
+    overflow-x: hidden;    
+    padding-right: 10px;  
+    border-right: 1px solid #ccc;
+}
+
+
+.product-details-container {
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-top: 20px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image-container {
+    height: 250px; 
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-details-container img {
+    border-radius: 5px;
+    height: 150px; 
+    width: auto;  
+    object-fit: fill; 
+    margin-bottom: 15px;
+}
+
+.product-details-content{
+    width: 100%;
+    color: #5E5166;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 1px;    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-details-content .product-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.product-details-content .product-price {
+    font-family: 'Afacad', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.product-details-content .product-description {
+    text-align: center;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 12px;
+    width: 80%; 
+}
+
+.estimated-delivery-group {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 1px;
+}
+
+.product-checkout-inputs {      
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-details-container .product-customizations {
+
+    width: 400px;
+}
+
+
+
+.product-checkout-inputs .form-group{  
+    width: 100%;
+    padding: 15px;
+}
+
+.product-checkout-inputs .btn{  
+   margin-top: auto;
+}
