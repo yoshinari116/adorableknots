@@ -9,7 +9,6 @@ if (!isset($_SESSION['user'])) {
 
 $userId = $_SESSION['user']['user_id'];
 
-
 // Remove from cart
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_cart_id'])) {
     $removeStmt = $conn->prepare("DELETE FROM cart_tbl WHERE cart_id = ? AND user_id = ?");
@@ -108,10 +107,12 @@ $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tbody>
                             </table>
 
-                            <form action="checkout-page.php?from=cart" method="POST" class="d-flex gap-2 align-items-center mb-2">
-                                <input type="hidden" name="product_ids[]" value="<?= $item['product_id'] ?>">
-                                <button type="submit" class="btn btn-primary">Checkout</button>
+                            <form action="cart-checkout-page.php" method="POST" class="d-flex gap-2 align-items-center mb-2">
+                                <!-- Send all product IDs as a comma-separated string in one hidden field -->
+                                <input type="hidden" name="product_ids" value="<?= implode(',', array_column($cartItems, 'product_id')) ?>">
+                                <button type="submit" class="btn btn-primary">Checkout All</button>
                             </form>
+
 
                             <form method="post" class="me-2">
                                 <input type="hidden" name="remove_cart_id" value="<?= htmlspecialchars($item['cart_id']) ?>">

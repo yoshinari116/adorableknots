@@ -29,6 +29,7 @@ if (!in_array($payment_mode, $valid_payment_modes)) {
 }
 
 $customization = substr(trim($_POST['customization'] ?? ''), 0, 255); // Limit to 255 chars
+$from_cart = isset($_POST['from_cart']) && $_POST['from_cart'] === 'true';
 
 // Validate address ownership
 $stmt = $conn->prepare("SELECT * FROM address_tbl WHERE address_id = ? AND user_id = ?");
@@ -41,25 +42,74 @@ if ($stmt->rowCount() === 0) {
 try {
     $conn->beginTransaction();
 
-    // Validate product data
-    if (!isset($_POST['products'][0]['product_price'], $_POST['products'][0]['quantity'])) {
-        echo "Invalid form submission. Missing product_price or quantity in products.";
-        exit;
+    $total_price = 0;
+    $items = [];
+
+    if ($from_cart && isset($_SESSION['cart'])) {
+        $merged_cart = [];
+
+        // Merge duplicate products by summing their quantities
+        foreach ($_SESSION['cart'] as $product_id => $quantity) {
+            if (isset($merged_cart[$product_id])) {
+                $merged_cart[$product_id] += $quantity;
+            } else {
+                $merged_cart[$product_id] = $quantity;
+            }
+        }
+
+        // Fetch product prices and prepare items
+        foreach ($merged_cart as $product_id => $quantity) {
+            $product_id = trim($product_id); // sanitize
+            
+            if ($product_id === '') {
+                echo "Empty product_id detected.";
+                continue;
+            }
+        
+            $stmt = $conn->prepare("SELECT product_price FROM product_tbl WHERE product_id = :product_id");
+            $stmt->bindParam(':product_id', $product_id, PDO::PARAM_STR);
+            $stmt->execute();
+            $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if ($product) {
+                $price = $product['product_price'];
+                $total_price += $price * $quantity;
+        
+                $customization = '';
+                if (isset($_POST['products'][$product_id]['customization'])) {
+                    $customization = $_POST['products'][$product_id]['customization'];
+                }
+        
+                $items[] = [
+                    'product_id' => $product_id,
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'customization' => $customization
+                ];
+            } else {
+                echo "Product not found for ID: $product_id";
+            }
+        }
+        
+    } else {
+        // Single product checkout
+        if (!isset($_POST['products'][0]['product_price'], $_POST['products'][0]['quantity'])) {
+            echo "Invalid form submission. Missing product_price or quantity in products.";
+            exit;
+        }
+
+        $product_data = $_POST['products'][0];
+        $product_id = $_POST['product_id'];
+        $product_price = floatval($product_data['product_price']);
+        $quantity = intval($product_data['quantity']);
+        $total_price = $product_price * $quantity;
+
+        $items[] = [
+            'product_id' => $product_id,
+            'quantity' => $quantity,
+            'price' => $product_price
+        ];
     }
-
-    $product_data = $_POST['products'][0];
-    $product_id = $_POST['product_id'];
-    $product_price = floatval($product_data['product_price']);
-    $quantity = intval($product_data['quantity']);
-    $total_price = $product_price * $quantity;
-
-    // Prepare order items
-    $items[] = [
-        'product_id' => $product_id,
-        'quantity' => $quantity,
-        'price' => $product_price,
-        'customization' => $customization
-    ];
 
     // Generate unique alphanumeric order_id starting with 0
     $order_id = '0' . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 7);
@@ -91,7 +141,7 @@ try {
             echo "Invalid product_id before insert.";
             continue;
         }
-
+    
         $item_id = 'IT' . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6);
         $item_stmt->execute([
             ':item_id' => $item_id,
@@ -102,8 +152,13 @@ try {
             ':customization' => $item['customization']
         ]);
     }
+    
 
     $conn->commit();
+
+    if ($from_cart) {
+        unset($_SESSION['cart']);
+    }
 
     header("Location: ../orders-page.php?success=1");
     exit;
