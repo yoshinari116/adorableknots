@@ -1,96 +1,96 @@
-<?php
-session_start();
-require_once '../database/db.php';
+    <?php
+    session_start();
+    require_once '../database/db.php';
 
-$sql_categories = "SELECT * FROM category_tbl ORDER BY category_name ASC";
-$stmt_categories = $conn->prepare($sql_categories);
+    $sql_categories = "SELECT * FROM category_tbl ORDER BY category_name ASC";
+    $stmt_categories = $conn->prepare($sql_categories);
 
-if ($stmt_categories->execute()) {
-    $categories = $stmt_categories->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $categories = [];
-    echo "Error fetching categories: " . $stmt_categories->errorInfo()[2];
-}
-
-// Check if 'Others' category exists and if not, add it with a new category_id
-$others_exists = false;
-foreach ($categories as $category) {
-    if ($category['category_name'] === 'Others') {
-        $others_exists = true;
-        break;
-    }
-}
-
-if (!$others_exists) {
-    // Generate the category_id for "Others"
-    $category_name = 'Others';
-    $minute = date('i');  // Current minute
-    $second = date('s');  // Current second
-    $first_letter = strtoupper(substr($category_name, 0, 1)); // First letter of 'Others'
-
-    // Create category_id: CT + minute + second + first letter of category name
-    $category_id = 'CT' . $minute . $second . $first_letter;
-
-    // Insert the "Others" category with the generated category_id
-    $stmt_insert = $conn->prepare("INSERT INTO category_tbl (category_id, category_name) VALUES (:category_id, :category_name)");
-    $stmt_insert->bindParam(':category_id', $category_id, PDO::PARAM_STR);
-    $stmt_insert->bindParam(':category_name', $category_name, PDO::PARAM_STR);
-    
-    if ($stmt_insert->execute()) {
-        // Successfully added the 'Others' category
-        $_SESSION['success'] = "'Others' category added successfully with ID $category_id.";
+    if ($stmt_categories->execute()) {
+        $categories = $stmt_categories->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        // Error adding the 'Others' category
-        $_SESSION['error'] = "Error adding 'Others' category.";
+        $categories = [];
+        echo "Error fetching categories: " . $stmt_categories->errorInfo()[2];
     }
-}
 
-// Sorting categories: push 'Others' to the last
-usort($categories, function($a, $b) {
-    if ($a['category_name'] === 'Others') return 1;
-    if ($b['category_name'] === 'Others') return -1;
-    return strcmp($a['category_name'], $b['category_name']);
-});
+    // Check if 'Others' category exists and if not, add it with a new category_id
+    $others_exists = false;
+    foreach ($categories as $category) {
+        if ($category['category_name'] === 'Others') {
+            $others_exists = true;
+            break;
+        }
+    }
 
-// Handle filters
-$category_filter = isset($_GET['category_id']) ? $_GET['category_id'] : null;
-$valid_statuses = ['Available', 'Not Available'];
-$status_filter = $_GET['status'] ?? 'Available';  // Default to 'Available'
+    if (!$others_exists) {
+        // Generate the category_id for "Others"
+        $category_name = 'Others';
+        $minute = date('i');  // Current minute
+        $second = date('s');  // Current second
+        $first_letter = strtoupper(substr($category_name, 0, 1)); // First letter of 'Others'
 
-if (!in_array($status_filter, $valid_statuses)) {
-    $status_filter = null;
-}
+        // Create category_id: CT + minute + second + first letter of category name
+        $category_id = 'CT' . $minute . $second . $first_letter;
 
-// Build product query
-$sql_products = "SELECT p.*, c.category_name 
-                 FROM product_tbl p 
-                 LEFT JOIN category_tbl c ON p.category_id = c.category_id";
+        // Insert the "Others" category with the generated category_id
+        $stmt_insert = $conn->prepare("INSERT INTO category_tbl (category_id, category_name) VALUES (:category_id, :category_name)");
+        $stmt_insert->bindParam(':category_id', $category_id, PDO::PARAM_STR);
+        $stmt_insert->bindParam(':category_name', $category_name, PDO::PARAM_STR);
+        
+        if ($stmt_insert->execute()) {
+            // Successfully added the 'Others' category
+            $_SESSION['success'] = "'Others' category added successfully with ID $category_id.";
+        } else {
+            // Error adding the 'Others' category
+            $_SESSION['error'] = "Error adding 'Others' category.";
+        }
+    }
 
-$where_conditions = [];
-$params = [];
+    // Sorting categories: push 'Others' to the last
+    usort($categories, function($a, $b) {
+        if ($a['category_name'] === 'Others') return 1;
+        if ($b['category_name'] === 'Others') return -1;
+        return strcmp($a['category_name'], $b['category_name']);
+    });
 
-if ($category_filter) {
-    $where_conditions[] = "p.category_id = :category_id";
-    $params[':category_id'] = $category_filter;
-}
+    // Handle filters
+    $category_filter = isset($_GET['category_id']) ? $_GET['category_id'] : null;
+    $valid_statuses = ['Available', 'Not Available'];
+    $status_filter = $_GET['status'] ?? 'Available';  // Default to 'Available'
 
-if ($status_filter) {
-    $where_conditions[] = "p.product_status = :product_status";
-    $params[':product_status'] = $status_filter;
-}
+    if (!in_array($status_filter, $valid_statuses)) {
+        $status_filter = null;
+    }
 
-if ($where_conditions) {
-    $sql_products .= " WHERE " . implode(" AND ", $where_conditions);
-}
+    // Build product query
+    $sql_products = "SELECT p.*, c.category_name 
+                    FROM product_tbl p 
+                    LEFT JOIN category_tbl c ON p.category_id = c.category_id";
 
-$stmt_products = $conn->prepare($sql_products);
-foreach ($params as $param => $value) {
-    $stmt_products->bindValue($param, $value);
-}
+    $where_conditions = [];
+    $params = [];
 
-$stmt_products->execute();
-$products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
-?>
+    if ($category_filter) {
+        $where_conditions[] = "p.category_id = :category_id";
+        $params[':category_id'] = $category_filter;
+    }
+
+    if ($status_filter) {
+        $where_conditions[] = "p.product_status = :product_status";
+        $params[':product_status'] = $status_filter;
+    }
+
+    if ($where_conditions) {
+        $sql_products .= " WHERE " . implode(" AND ", $where_conditions);
+    }
+
+    $stmt_products = $conn->prepare($sql_products);
+    foreach ($params as $param => $value) {
+        $stmt_products->bindValue($param, $value);
+    }
+
+    $stmt_products->execute();
+    $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
+    ?>
 
 
 <!DOCTYPE html>
@@ -125,7 +125,7 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             <div class="nav-links">
                 <button class="active"><a href="admin/admin-page.php">Products</a></button>
                 <button><a href="admin-orders-page.php">Orders</a></button>
-                <button><a href="#">Analytics</a></button>
+                <button><a href="analytics-page.php">Analytics</a></button>
             </div>
 
             <div class="logout">
@@ -216,7 +216,10 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                 <?= htmlspecialchars($row['product_name']) ?>
                             </div>
                             <div class="product-price">
-                                ₱<?= number_format($row['product_price'], 2) ?>
+                               ₱<?= number_format($row['product_price'], 2) ?> + ₱<?= number_format($row['shipping_fee'], 2) ?> Shipping fee
+                            </div>
+                            <div class="product-stock">
+                                Stock: (<?= htmlspecialchars($row['product_stock']) ?>)
                             </div>
                             <div class="product-description">
                                 <?= nl2br(htmlspecialchars($row['product_description'])) ?>
@@ -265,6 +268,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="mb-3">
                                         <label>Price</label>
                                         <input type="number" class="form-control" name="product_price" value="<?= $row['product_price'] ?>" required>
+                                    </div>
+
+                                    <!-- Shipping Fee -->
+                                    <div class="mb-3">
+                                        <label>Shipping Fee</label>
+                                        <input type="number" class="form-control" name="shipping_fee" value="<?= htmlspecialchars($row['shipping_fee']) ?>" step="0.01" required>
+                                    </div>
+
+                                    <!-- Stock -->
+                                    <div class="mb-3">
+                                        <label>Product Stock</label>
+                                        <input type="number" name="product_stock" class="form-control" value="<?= htmlspecialchars($row['product_stock']) ?>" required min="0" />
                                     </div>
 
                                     <!-- Product Description -->
@@ -375,6 +390,18 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
                         <div class="mb-3">
                             <label>Product Price</label>
                             <input type="number" name="product_price" class="form-control" step="0.01" required />
+                        </div>
+
+                        <!-- Shipping Fee -->
+                        <div class="mb-3">
+                            <label>Shipping Fee</label>
+                            <input type="number" name="shipping_fee" class="form-control" step="0.01" required />
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="mb-3">
+                            <label>Product Stock</label>
+                            <input type="number" name="product_stock" class="form-control" required min="0" />
                         </div>
 
                         <!-- Product Description -->

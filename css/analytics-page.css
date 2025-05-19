@@ -1,12 +1,10 @@
-html, body {
-    height: 100%;
+body{
+    font-family: 'Inter', sans-serif;
+    padding-top: 140px;
     margin: 0;
-    padding: 0;
-    overflow: hidden; /* prevent double scrollbars */
-    background: linear-gradient(to bottom, #FF7EBC 0%, #FFB5DA 50%, #FF7EBC 100%);
-}
 
-.navbar {
+}
+.custom-navbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -155,106 +153,19 @@ html, body {
     height: 20px;
 }
 
-
-.content-scroll {
-    height: calc(100% - 90px); /* 100% minus navbar height */
-    margin-top: 0px; /* to avoid overlapping the fixed navbar */
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.container.my-5 {
-    max-width: 1500px;
-    margin: auto;
-    padding: 10px;
-}
-
-.filter-status-container {
-    padding: 1rem;
-    background-color: #f9f9f9; /* placeholder background */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.filter-status-container .form-select {
-    min-width: 180px;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
-
-.filter-status-container .col-form-label {
-    font-weight: 600;
-    margin-right: 0.5rem;
-}
-
-.filter-status-container .col-auto {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-
-/* Optional: spacing between filters */
-.filter-status-container .row {
-    gap: 1.5rem;
-}
-
-.orders-header {
-    font-family: 'Dosis', sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: white;
-    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
+.chart-container{
+    padding: 200px;
+    padding-top: 50px;
     width: 100%;
 }
 
-.card-header {
-    background-color: #f8f9fa;
-    font-size: 16px;
-    color: #5E5166;
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-}
-.card {
-    border: none;   
-}
-
-.card-body p {
-    margin-bottom: 8px;
-    color: #5E5166;
-}
-
-.table {
-    margin-top: 15px;
-    border-collapse: collapse;
-}
-
-.table thead th {
-    background-color: #edecec;
-    color: #222;
-    text-align: center;
-}
-
-.table td, .table th {
-    vertical-align: middle !important;
-    text-align: center;
-    padding: 12px;
-}
-
-/* Product image */
-.table img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-}
-
-.no-orders{
+.chart-container h1 {
     font-family: 'Dosis', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 1px;
-    color: white;
-    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.396);
+    color: #5E5166;
+}
+
+#chart_div {
+    height: 500px;
 }

@@ -12,7 +12,7 @@ if (!$user_id) {
 // Fetch user addresses
 $sql = "SELECT * FROM address_tbl WHERE user_id = :user_id";
 $stmt = $conn->prepare($sql);
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
 $stmt->execute();
 $addresses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

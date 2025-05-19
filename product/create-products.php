@@ -9,8 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $product_status = $_POST['product_status'];
     $product_description = $_POST['product_description'] ?? null;
     $estimated_delivery = $_POST['estimated_delivery'] ?? null;
+    $product_stock = isset($_POST['product_stock']) ? intval($_POST['product_stock']) : 0;
+    $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : 0.00;
 
-    // Generate product_id in the format "PDT" + yymmddHis (total 15 characters)
     $product_id = "PDT" . date("ymdHis");
 
     $target_dir = "../uploads/";
@@ -33,8 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (move_uploaded_file($_FILES["product_img"]["tmp_name"], $target_file)) {
         $product_img = basename($_FILES["product_img"]["name"]);
 
-        $sql = "INSERT INTO product_tbl (product_id, product_name, category_id, product_price, product_status, product_img, product_description, estimated_delivery)
-                VALUES (:product_id, :product_name, :category_id, :product_price, :product_status, :product_img, :product_description, :estimated_delivery)";
+        $sql = "INSERT INTO product_tbl (
+                    product_id, product_name, category_id, product_price,
+                    product_status, product_img, product_description,
+                    estimated_delivery, product_stock, shipping_fee
+                ) VALUES (
+                    :product_id, :product_name, :category_id, :product_price,
+                    :product_status, :product_img, :product_description,
+                    :estimated_delivery, :product_stock, :shipping_fee
+                )";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':product_id', $product_id);
@@ -45,6 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bindParam(':product_img', $product_img);
         $stmt->bindParam(':product_description', $product_description);
         $stmt->bindParam(':estimated_delivery', $estimated_delivery);
+        $stmt->bindParam(':product_stock', $product_stock);
+        $stmt->bindParam(':shipping_fee', $shipping_fee);
 
         if ($stmt->execute()) {
             $_SESSION['success'] = "New product added successfully!";

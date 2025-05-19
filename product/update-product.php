@@ -8,13 +8,22 @@ if (isset($_POST['update'])) {
     $status = $_POST['product_status'];
     $description = $_POST['product_description'];
     $estimated_delivery = $_POST['estimated_delivery'];
+    $stock = $_POST['product_stock'];
+    $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : 0.00;
 
     $stmt = $conn->prepare("SELECT product_img FROM product_tbl WHERE product_id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $update_query = "UPDATE product_tbl SET product_name = :name, product_price = :price, product_status = :status, product_description = :description, estimated_delivery = :estimated_delivery";
+    $update_query = "UPDATE product_tbl SET 
+        product_name = :name, 
+        product_price = :price, 
+        product_status = :status, 
+        product_description = :description, 
+        estimated_delivery = :estimated_delivery,
+        product_stock = :stock,
+        shipping_fee = :shipping_fee";
 
     if (!empty($_FILES['product_img']['name'])) {
         $target_dir = "../uploads/";
@@ -36,12 +45,15 @@ if (isset($_POST['update'])) {
     }
 
     $update_query .= " WHERE product_id = :id";
+
     $stmt = $conn->prepare($update_query);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':status', $status);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':estimated_delivery', $estimated_delivery);
+    $stmt->bindParam(':stock', $stock);
+    $stmt->bindParam(':shipping_fee', $shipping_fee);
     $stmt->bindParam(':id', $id);
 
     if (isset($img)) {
