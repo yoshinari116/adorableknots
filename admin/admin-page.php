@@ -12,7 +12,6 @@
         echo "Error fetching categories: " . $stmt_categories->errorInfo()[2];
     }
 
-    // Check if 'Others' category exists and if not, add it with a new category_id
     $others_exists = false;
     foreach ($categories as $category) {
         if ($category['category_name'] === 'Others') {
@@ -151,8 +150,6 @@
                 <button class="nav-button <?= !isset($_GET['category_id']) ? 'active' : '' ?>" onclick="location.href='admin-page.php<?= $status_query ?>'">
                 All Products
                 </button>
-
-
 
                 <?php foreach ($categories as $category): ?>
                     <button class="nav-button <?= (isset($_GET['category_id']) && $_GET['category_id'] == $category['category_id']) ? 'active' : '' ?>" onclick="location.href='admin-page.php?category_id=<?= $category['category_id'] ?><?= $status_query ?>'">

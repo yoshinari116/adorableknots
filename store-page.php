@@ -4,10 +4,8 @@ require_once 'database/db.php';
 
 $login_user = $_SESSION['user'] ?? null;
 
-// Fetch categories
 $sql_categories = "SELECT * FROM category_tbl ORDER BY category_name ASC";
 $stmt_categories = $conn->prepare($sql_categories);
-$categories = [];
 
 if ($stmt_categories->execute()) {
     $categories = $stmt_categories->fetchAll(PDO::FETCH_ASSOC);
@@ -15,7 +13,6 @@ if ($stmt_categories->execute()) {
     echo "Error fetching categories: " . $stmt_categories->errorInfo()[2];
 }
 
-// Ensure 'Others' category is present
 $others_exists = false;
 foreach ($categories as $category) {
     if ($category['category_name'] === 'Others') {
@@ -24,7 +21,27 @@ foreach ($categories as $category) {
     }
 }
 if (!$others_exists) {
-    $categories[] = ['category_name' => 'Others', 'category_id' => '14'];
+        
+    $category_name = 'Others';
+    $minute = date('i');  // Current minute
+    $second = date('s');  // Current second
+    $first_letter = strtoupper(substr($category_name, 0, 1)); // First letter of 'Others'
+
+    // Create category_id: CT + minute + second + first letter of category name
+    $category_id = 'CT' . $minute . $second . $first_letter;
+
+    // Insert the "Others" category with the generated category_id
+    $stmt_insert = $conn->prepare("INSERT INTO category_tbl (category_id, category_name) VALUES (:category_id, :category_name)");
+    $stmt_insert->bindParam(':category_id', $category_id, PDO::PARAM_STR);
+    $stmt_insert->bindParam(':category_name', $category_name, PDO::PARAM_STR);
+    
+    if ($stmt_insert->execute()) {
+        // Successfully added the 'Others' category
+        $_SESSION['success'] = "'Others' category added successfully with ID $category_id.";
+    } else {
+        // Error adding the 'Others' category
+        $_SESSION['error'] = "Error adding 'Others' category.";
+    }
 }
 
 // Sort categories: push 'Others' last
@@ -35,13 +52,12 @@ usort($categories, function ($a, $b) {
 });
 
 // Handle filters
-$category_filter = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
-$status_filter = $_GET['status'] ?? 'Available'; // Default to 'Available'
+$category_filter = isset($_GET['category_id']) ? $_GET['category_id'] : null;
+$valid_statuses = ['Available', 'Not Available'];
+$status_filter = $_GET['status'] ?? 'Available';
 
-// Normalize and validate status
-$valid_statuses = ['Available', 'Not Available', 'All'];
 if (!in_array($status_filter, $valid_statuses)) {
-    $status_filter = 'Available'; // fallback if invalid
+    $status_filter = null;
 }
 
 // Build dynamic product query
@@ -52,29 +68,37 @@ $sql_products = "SELECT p.*, c.category_name
 $where_conditions = [];
 $params = [];
 
-if ($category_filter) {
-    $where_conditions[] = "p.category_id = :category_id";
-    $params[':category_id'] = $category_filter;
-}
+  // Build product query
+    $sql_products = "SELECT p.*, c.category_name 
+                    FROM product_tbl p 
+                    LEFT JOIN category_tbl c ON p.category_id = c.category_id";
 
-// Only apply product_status filter if it's not 'All'
-if ($status_filter !== 'All') {
-    $where_conditions[] = "p.product_status = :product_status";
-    $params[':product_status'] = $status_filter;
-}
+    $where_conditions = [];
+    $params = [];
 
-if ($where_conditions) {
-    $sql_products .= " WHERE " . implode(" AND ", $where_conditions);
-}
+    if ($category_filter) {
+        $where_conditions[] = "p.category_id = :category_id";
+        $params[':category_id'] = $category_filter;
+    }
 
-$stmt_products = $conn->prepare($sql_products);
-foreach ($params as $param => $value) {
-    $stmt_products->bindValue($param, $value);
-}
+    if ($status_filter) {
+        $where_conditions[] = "p.product_status = :product_status";
+        $params[':product_status'] = $status_filter;
+    }
 
-$stmt_products->execute();
-$products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
-?>
+    if ($where_conditions) {
+        $sql_products .= " WHERE " . implode(" AND ", $where_conditions);
+    }
+
+    $stmt_products = $conn->prepare($sql_products);
+    foreach ($params as $param => $value) {
+        $stmt_products->bindValue($param, $value);
+    }
+
+    $stmt_products->execute();
+    $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+
 
 
 <!DOCTYPE html>
@@ -120,15 +144,23 @@ $products = $stmt_products->fetchAll(PDO::FETCH_ASSOC);
             <div class="category-sidebar-header">CATEGORIES</div>
             <div class="category-list">
                 <?php
-                $status = $_GET['status'] ?? 'Available'; // Default to 'Available' if not set
-                $status_query = '?status=' . urlencode($status);
+                $status_query = isset($_GET['status']) ? '?status=' . urlencode($_GET['status']) : '';
                 ?>
-                <button class="nav-button <?= !isset($_GET['category_id']) ? 'active' : '' ?>" onclick="location.href='store-page.php<?= $status_query ?>'">All Products</button>
+
+                <?php
+                $has_status = isset($_GET['status']);
+                $status_query = $has_status ? '?status=' . urlencode($_GET['status']) : '';
+                ?>
+                <button class="nav-button <?= !isset($_GET['category_id']) ? 'active' : '' ?>" onclick="location.href='store-page.php<?= $status_query ?>'">
+                All Products
+                </button>
+
                 <?php foreach ($categories as $category): ?>
                     <button class="nav-button <?= (isset($_GET['category_id']) && $_GET['category_id'] == $category['category_id']) ? 'active' : '' ?>" onclick="location.href='store-page.php?category_id=<?= $category['category_id'] ?><?= $status_query ?>'">
                         <?= htmlspecialchars($category['category_name']) ?>
                     </button>
                 <?php endforeach; ?>
+
             </div>
 
             <div class="category-sidebar-header">FILTER PRODUCTS BY STATUS</div>
